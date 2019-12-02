@@ -1,0 +1,14 @@
+GENUS	SPECIES	SYNONYMS
+Kubrickus	Kubrickus aus	NA
+Kubrickus	Kubrickus beus	NA
+Kubrickus	Kubrickus ceus	NA
+Kubrickus	Kubrickus deus	NA
+Kubrickus	Kubrickus eus	NA
+Kubrickus	Kubrickus feus	NA
+Kubrickus	Kubrickus geus	NA
+Kubrickus	Kubrickus heus	NA
+Kubrickus	Kubrickus ieus	NA
+Kubrickus	Kubrickus jeus	NA
+Kubrickus	Kubrickus keus	NA
+Kubrickus	Kubrickus leus	NA
+Kubrickus	Kubrickus leus	Kubrickus lleus

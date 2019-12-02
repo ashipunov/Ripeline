@@ -1,0 +1,5 @@
+#!/bin/bash
+
+# this script simply checks if string "error" presents in any of *_rresults.txt files
+
+grep -i "error" *_rresults.txt

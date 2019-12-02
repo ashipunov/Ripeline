@@ -1,0 +1,13 @@
+ids	comb.ids
+Kubrickus_heus__K-008	Kubrickus_heus__K-008
+Kubrickus_aus__K-001_efgh_-	Kubrickus_aus__K-001_efgh_-
+Kubrickus_beus__K-002_efgh_-	Kubrickus_beus__K-002_efgh_-
+Kubrickus_ceus__K-003_efgh_-	Kubrickus_ceus__K-003_efgh_-
+Kubrickus_deus__K-004	Kubrickus_deus__K-004
+Kubrickus_eus__K-005	Kubrickus_eus__K-005
+Kubrickus_feus__K-006_efgh_XYZ124	Kubrickus_feus__K-006_efgh_XYZ124
+Kubrickus_geus__K-007_efgh_-	Kubrickus_geus__K-007_efgh_-
+Kubrickus_ieus__K-009_efgh_-	Kubrickus_ieus__K-009_efgh_-
+Kubrickus_jeus__K-010	Kubrickus_jeus__K-010
+Kubrickus_keus__K-011	Kubrickus_keus__K-011
+Kubrickus_leus__K-012	Kubrickus_leus__K-012 + Kubrickus_leus__K-014_abcd_K-012

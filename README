@@ -1,0 +1,84 @@
+***HOW TO INSTALL RIPELINE***
+
+All platforms:
+=============
+
+You will need:
+
+R with working Rscript command (check it by typing in the terminal window
+"Rscript", there should come some short instructions of how to use it)
+
+shipunov R package; after installation load it and type in R window
+"Rresults()"; this will output the instruction of how to install "Rresults"
+command
+
+The following R packages: ips, ape, kmer
+
+MrBayes installation which contains "mb-mpi" executable working in the
+terminal (check it by typing "mb-mpi" in the terminal window).
+
+RAxML installation; type "raxmlHPC" in terminal to see if this executable
+works
+
+MUSCLE installation (optionally also MAFFT and ClustalO); type "muscle"
+in terminal to see if it works
+
+NOTE (especially Windows users): if for any reason "mb-mpi" and
+"raxmlHPC" do not work, the Ripeline will still run (probably, with some
+messages) but Bayesian and RAxML trees will not appear. If you have RAxML
+and MrBayes installed, please change names of executable files by editing
+corresponding R scripts (they are simple text files). However, Ripeline
+will _not_ work without "muscle".
+
+ANOTHER NOTE: all scripts are simple text files, so on Windows and
+(probably) on macOS you will need the simple text editor to work with
+them. There are many, but few are fully cross-platform and at the same
+time feature rich and simple enough for non-programmers; examples of the
+latter are "Kate" and "Geany".
+
+Windows:
+========
+
+Install bash UNIX shell, e.g. from https://cygwin.com/install.html
+
+(Optional) Install the good terminal application, e.g., ConEmu or cmder (please
+google these names)
+
+macOS and Linux:
+================
+
+No additional installations required
+
+***HOW TO USE RIPELINE***
+
+Run the example:
+================
+
+In the terminal, make Ripeline directory current, e.g., enter in
+the terminal window something like "cd ~/some/dir/ripeline"
+
+Then run the shell script "make_all", e.g., enter in the terminal window
+"bash ./make_all"
+
+All paramaters (like bootstrap replicates) are set to minimal values so
+on the Intel Core i5 with SSD and 8 Gb memory it runs approximately 2 min
+
+Check phylogeny trees which will appear in the directory names "99_trees"
+
+Now change the DNA database (file "_kubricks_dna_txt"): for example,
+uncomment (remove "#") in the beginning of last line, then new sequence
+start to be available for Ripeline
+
+Run "make_all" again
+
+Check out new phylogeny trees, compare with old ones
+
+Play with this example as long as you like, e.g., add some data, comment
+(with "#") some data etc., run "make_all" and observe new phylogeny trees
+
+Run with your data:
+===================
+
+The best way is to replace the example databases with your own database
+made _in the same way_ (same set of text tables, same column names), and
+run again

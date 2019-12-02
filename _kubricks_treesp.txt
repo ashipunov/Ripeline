@@ -1,0 +1,2 @@
+SPECIES.NEW	TYPE	USE	COMMENT
+Kubrickus heus	outgroup	1	NA

@@ -1,0 +1,26 @@
+## this script outputs "wanting degree" for each species
+## non-sequenced species are naturally "most wanted"
+## samples with only one fragment sequenced are "more wanted" then with two fragments, and so on
+
+library(shipunov)
+
+## read input tables
+dna <- read.table("_kubricks_dna.txt", sep="\t", h=TRUE, as.is=TRUE)
+sp <- read.table("_kubricks_sp.txt", sep="\t", h=TRUE, as.is=TRUE)
+
+## do not use deselected entries
+dna <- dna[dna$SELECT == 1 | is.na(dna$SELECT), ]
+
+wanted <- data.frame(SPECIES=sort(unique(sp$SPECIES)), stringsAsFactors=FALSE)
+
+## calculate "wanting degree" for each fragment
+wanted$ABCD <- (wanted$SPECIES %in% dna$SPECIES.NEW[dna$FRAGMENT == "abcd"]) * 2
+wanted$EFGH <- (wanted$SPECIES %in% dna$SPECIES.NEW[dna$FRAGMENT == "efgh"]) * 2
+
+## calculation of some "general wanting degree"
+wanted[, -1] <- apply(wanted[, -1], 2, as.numeric)
+wanted$MOST.WANTED <- apply(wanted[, -1], 1, function(.x) 6-sum(.x)) # 6 is a maximum
+
+## write the output
+write.table(wanted[order(wanted$MOST.WANTED, decreasing=TRUE), ],
+ file="13_wanted/kubricks_wanted.txt", sep="\t", row.names=FALSE, quote=FALSE)

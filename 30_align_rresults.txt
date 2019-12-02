@@ -1,0 +1,48 @@
+
+> ## this script simply runs the external MUSCLE tool and redirect its output into next directory
+> 
+> ## go into directory which contains sets
+> setwd("20_sets")
+
+> ## empty list with components names as fragments
+> dna <- structure(vector("list", 2), names=c("abcd", "efgh"))
+
+> ## run external tool
+> for (f in names(dna)) system(paste0("muscle -in ", f, ".fasta", " -out ", "../30_alignments/", f, ".fasta"))
+
+MUSCLE v3.8.31 by Robert C. Edgar
+
+http://www.drive5.com/muscle
+This software is donated to the public domain.
+Please cite: Edgar, R.C. Nucleic Acids Res 32(5), 1792-97.
+
+abcd 12 seqs, max length 751, avg  length 745
+00:00:00    23 MB(-4%)  Iter   1    1.28%  K-mer dist pass 100:00:00    23 MB(-4%)  Iter   1  100.00%  K-mer dist pass 1
+00:00:00    23 MB(-4%)  Iter   1    1.28%  K-mer dist pass 200:00:00    23 MB(-4%)  Iter   1  100.00%  K-mer dist pass 2
+00:00:00    23 MB(-4%)  Iter   1    9.09%  Align node       00:00:00    28 MB(-5%)  Iter   1   18.18%  Align node00:00:00    28 MB(-5%)  Iter   1   27.27%  Align node00:00:00    28 MB(-5%)  Iter   1   36.36%  Align node00:00:00    29 MB(-6%)  Iter   1   45.45%  Align node00:00:00    30 MB(-6%)  Iter   1   54.55%  Align node00:00:00    30 MB(-6%)  Iter   1   63.64%  Align node00:00:00    30 MB(-6%)  Iter   1   72.73%  Align node00:00:00    30 MB(-6%)  Iter   1   81.82%  Align node00:00:00    30 MB(-6%)  Iter   1   90.91%  Align node00:00:00    31 MB(-6%)  Iter   1  100.00%  Align node00:00:00    31 MB(-6%)  Iter   1  100.00%  Align node
+00:00:00    31 MB(-6%)  Iter   1    8.33%  Root alignment00:00:00    31 MB(-6%)  Iter   1   16.67%  Root alignment00:00:00    31 MB(-6%)  Iter   1   25.00%  Root alignment00:00:00    31 MB(-6%)  Iter   1   33.33%  Root alignment00:00:00    31 MB(-6%)  Iter   1   41.67%  Root alignment00:00:00    31 MB(-6%)  Iter   1   50.00%  Root alignment00:00:00    31 MB(-6%)  Iter   1   58.33%  Root alignment00:00:00    31 MB(-6%)  Iter   1   66.67%  Root alignment00:00:00    31 MB(-6%)  Iter   1   75.00%  Root alignment00:00:00    31 MB(-6%)  Iter   1   83.33%  Root alignment00:00:00    31 MB(-6%)  Iter   1   91.67%  Root alignment00:00:00    31 MB(-6%)  Iter   1  100.00%  Root alignment00:00:00    31 MB(-6%)  Iter   1  100.00%  Root alignment
+00:00:00    31 MB(-6%)  Iter   2   10.00%  Refine tree   00:00:00    31 MB(-6%)  Iter   2   20.00%  Refine tree00:00:00    31 MB(-6%)  Iter   2   30.00%  Refine tree00:00:00    31 MB(-6%)  Iter   2   40.00%  Refine tree00:00:00    31 MB(-6%)  Iter   2   50.00%  Refine tree00:00:00    31 MB(-6%)  Iter   2   60.00%  Refine tree00:00:00    31 MB(-6%)  Iter   2   70.00%  Refine tree00:00:00    31 MB(-6%)  Iter   2  100.00%  Refine tree
+00:00:00    31 MB(-6%)  Iter   2    8.33%  Root alignment00:00:00    31 MB(-6%)  Iter   2   16.67%  Root alignment00:00:00    31 MB(-6%)  Iter   2   25.00%  Root alignment00:00:00    31 MB(-6%)  Iter   2   33.33%  Root alignment00:00:00    31 MB(-6%)  Iter   2   41.67%  Root alignment00:00:00    31 MB(-6%)  Iter   2   50.00%  Root alignment00:00:00    31 MB(-6%)  Iter   2   58.33%  Root alignment00:00:00    31 MB(-6%)  Iter   2   66.67%  Root alignment00:00:00    31 MB(-6%)  Iter   2   75.00%  Root alignment00:00:00    31 MB(-6%)  Iter   2   83.33%  Root alignment00:00:00    31 MB(-6%)  Iter   2   91.67%  Root alignment00:00:00    31 MB(-6%)  Iter   2  100.00%  Root alignment00:00:00    31 MB(-6%)  Iter   2  100.00%  Root alignment
+00:00:00    31 MB(-6%)  Iter   2  100.00%  Root alignment
+00:00:00    31 MB(-6%)  Iter   3    9.52%  Refine biparts00:00:00    31 MB(-6%)  Iter   3   14.29%  Refine biparts00:00:00    31 MB(-6%)  Iter   3   19.05%  Refine biparts00:00:00    31 MB(-6%)  Iter   3   23.81%  Refine biparts00:00:00    31 MB(-6%)  Iter   3   28.57%  Refine biparts00:00:00    31 MB(-6%)  Iter   3   33.33%  Refine biparts00:00:00    31 MB(-6%)  Iter   3   38.10%  Refine biparts00:00:00    31 MB(-6%)  Iter   3   42.86%  Refine biparts00:00:00    31 MB(-6%)  Iter   3   47.62%  Refine biparts00:00:00    31 MB(-6%)  Iter   3   52.38%  Refine biparts00:00:00    31 MB(-6%)  Iter   3   57.14%  Refine biparts00:00:00    31 MB(-6%)  Iter   3   61.90%  Refine biparts00:00:00    31 MB(-6%)  Iter   3   66.67%  Refine biparts00:00:00    31 MB(-6%)  Iter   3   71.43%  Refine biparts00:00:00    31 MB(-6%)  Iter   3   76.19%  Refine biparts00:00:00    31 MB(-6%)  Iter   3   80.95%  Refine biparts00:00:00    31 MB(-6%)  Iter   3   85.71%  Refine biparts00:00:00    31 MB(-6%)  Iter   3   90.48%  Refine biparts00:00:00    31 MB(-6%)  Iter   3   95.24%  Refine biparts00:00:00    31 MB(-6%)  Iter   3  100.00%  Refine biparts00:00:00    31 MB(-6%)  Iter   3  104.76%  Refine biparts00:00:00    31 MB(-6%)  Iter   3  100.00%  Refine biparts
+
+MUSCLE v3.8.31 by Robert C. Edgar
+
+http://www.drive5.com/muscle
+This software is donated to the public domain.
+Please cite: Edgar, R.C. Nucleic Acids Res 32(5), 1792-97.
+
+efgh 7 seqs, max length 353, avg  length 345
+00:00:00    23 MB(-4%)  Iter   1    3.57%  K-mer dist pass 100:00:00    23 MB(-4%)  Iter   1  100.00%  K-mer dist pass 1
+00:00:00    23 MB(-4%)  Iter   1    3.57%  K-mer dist pass 200:00:00    23 MB(-4%)  Iter   1  100.00%  K-mer dist pass 2
+00:00:00    23 MB(-4%)  Iter   1   16.67%  Align node       00:00:00    25 MB(-5%)  Iter   1   33.33%  Align node00:00:00    26 MB(-5%)  Iter   1   50.00%  Align node00:00:00    26 MB(-5%)  Iter   1   66.67%  Align node00:00:00    26 MB(-5%)  Iter   1   83.33%  Align node00:00:00    26 MB(-5%)  Iter   1  100.00%  Align node00:00:00    26 MB(-5%)  Iter   1  100.00%  Align node
+00:00:00    26 MB(-5%)  Iter   1   14.29%  Root alignment00:00:00    26 MB(-5%)  Iter   1   28.57%  Root alignment00:00:00    26 MB(-5%)  Iter   1   42.86%  Root alignment00:00:00    26 MB(-5%)  Iter   1   57.14%  Root alignment00:00:00    26 MB(-5%)  Iter   1   71.43%  Root alignment00:00:00    26 MB(-5%)  Iter   1   85.71%  Root alignment00:00:00    26 MB(-5%)  Iter   1  100.00%  Root alignment00:00:00    26 MB(-5%)  Iter   1  100.00%  Root alignment
+00:00:00    26 MB(-5%)  Iter   2  100.00%  Root alignment
+00:00:00    26 MB(-5%)  Iter   3   18.18%  Refine biparts00:00:00    26 MB(-5%)  Iter   3   27.27%  Refine biparts00:00:00    26 MB(-5%)  Iter   3   36.36%  Refine biparts00:00:00    26 MB(-5%)  Iter   3   45.45%  Refine biparts00:00:00    26 MB(-5%)  Iter   3   54.55%  Refine biparts00:00:00    26 MB(-5%)  Iter   3   63.64%  Refine biparts00:00:00    26 MB(-5%)  Iter   3   72.73%  Refine biparts00:00:00    26 MB(-5%)  Iter   3   81.82%  Refine biparts00:00:00    26 MB(-5%)  Iter   3   90.91%  Refine biparts00:00:00    26 MB(-5%)  Iter   3  100.00%  Refine biparts00:00:00    26 MB(-5%)  Iter   3  109.09%  Refine biparts00:00:00    26 MB(-5%)  Iter   3  100.00%  Refine biparts
+00:00:00    26 MB(-5%)  Iter   4   18.18%  Refine biparts00:00:00    26 MB(-5%)  Iter   4   27.27%  Refine biparts00:00:00    26 MB(-5%)  Iter   4   36.36%  Refine biparts00:00:00    26 MB(-5%)  Iter   4   45.45%  Refine biparts00:00:00    26 MB(-5%)  Iter   4   54.55%  Refine biparts00:00:00    26 MB(-5%)  Iter   4   63.64%  Refine biparts00:00:00    26 MB(-5%)  Iter   4   72.73%  Refine biparts00:00:00    26 MB(-5%)  Iter   4   81.82%  Refine biparts00:00:00    26 MB(-5%)  Iter   4   90.91%  Refine biparts00:00:00    26 MB(-5%)  Iter   4  100.00%  Refine biparts00:00:00    26 MB(-5%)  Iter   4  109.09%  Refine biparts00:00:00    26 MB(-5%)  Iter   4  100.00%  Refine biparts
+
+> ## alternatives:
+> ## MAFFT
+> ## for (f in names(dna)) system(paste0("mafft ", f, ".fasta", " > ", "../30_alignments/", f, "_mafft.fasta"))
+> ## ClustalO
+> ## for (f in names(dna)) system(paste0("clustalo -i ", f, ".fasta", " --force -o ", "../30_alignments/", "_clustalo.fasta", " -v"))

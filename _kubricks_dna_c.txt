@@ -1,0 +1,10 @@
+# "dna" is the local "DNA database"
+# variables are:
+SOURCE	where from, "MISU" is for sequences obtained locally ("ours"), "OTHERS" could be from GenBank, BOLD or elsewhere
+SEQUENCE.ID.ORIG	typically forms like "LETTER_SHORTCUT-NUMBER"; if two samples have same sequences, IDs concatenated with comma
+SEQUENCE.ID	sometimes, it is reasonable to modify the original ID (e.g., to simplify concatenation)
+FRAGMENT	code of the fragment, this project has "abcd" and "efgh" DNA fragments
+SPECIES.NEW	see the "samples" table
+COMMENT	comment
+SELECT	which sequences to use
+SEQUENCE	actual DNA string, "ATGCN" are allowed letters

@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# this shell script calls R scripts which build the output phylogenetic trees
+
+Rresults 61_make_r_mp_semistrict_tree.r
+Rresults 72_make_r_ml_trees.r
+Rresults 73_make_raxml_trees.r
+Rresults 81_make_mrbayes_semistrict_tree.r
+
+./make_gzip

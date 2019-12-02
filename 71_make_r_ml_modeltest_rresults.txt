@@ -1,0 +1,49 @@
+
+> ## this script compares different nucleotide substitution models
+> ## this is very separate script which might not be required to run each time
+> 
+> library(phangorn)
+Loading required package: ape
+
+> DATE <- format(Sys.time(), "%Y%m%d_%H%M%S") # timestamp
+
+> conc <- as.phyDat(read.dna("40_concatenated/semistrict.fasta", format="fasta"))
+
+> treesp <- read.table("_kubricks_treesp.txt", sep="\t", h=TRUE, as.is=TRUE) # read treesp to understand outlliers
+
+> outliers <- treesp$SPECIES.NEW[treesp$TYPE == "outlier" & treesp$USE == 1]
+
+> if (length(outliers) > 0) {
++  outliers <- gsub(" ", "_", outliers)
++  EXC <- labels(conc)[LAB %in% outliers]
++  conc <- conc[!labels(conc) %in% EXC, ] # remove outliers, if any
++ }
+
+> models <- modelTest(conc,
++  model=c("JC", "HKY", "GTR"), # change the model set if needed
++  multicore=TRUE) # multicore=TRUE might not work under Windows, remove if needed
+negative edges length changed to 0!
+[1] "JC+I"
+[1] "JC+G"
+[1] "JC+G+I"
+[1] "HKY+I"
+[1] "HKY+G"
+[1] "GTR+I"
+[1] "HKY+G+I"
+[1] "GTR+G"
+[1] "GTR+G+I"
+
+> models[order(models$AIC), ] # outputs the table with models arranged by AIC, change this order if needed
+     Model df    logLik      AIC         AICw     AICc        AICcw      BIC
+12 GTR+G+I 31 -2200.688 4463.376 3.681273e-01 4465.201 3.547823e-01 4619.002
+10   GTR+I 30 -2201.773 4463.545 3.382802e-01 4465.255 3.454246e-01 4614.151
+11   GTR+G 30 -2201.914 4463.829 2.935922e-01 4465.538 2.997928e-01 4614.434
+8  HKY+G+I 27 -2219.728 4493.457 1.081586e-07 4494.843 1.298442e-07 4629.002
+6    HKY+I 26 -2220.738 4493.475 1.071661e-07 4494.761 1.352605e-07 4624.000
+9      GTR 29 -2218.133 4494.267 7.214712e-08 4495.864 7.790486e-08 4639.852
+7    HKY+G 26 -2221.527 4495.054 4.866598e-08 4496.340 6.142409e-08 4625.579
+5      HKY 25 -2238.927 4527.855 3.670252e-15 4529.044 4.861008e-15 4653.359
+2     JC+I 22 -2247.684 4539.367 1.160691e-17 4540.291 1.755959e-17 4649.812
+4   JC+G+I 23 -2246.797 4539.595 1.035947e-17 4540.603 1.502132e-17 4655.059
+3     JC+G 22 -2248.783 4541.565 3.868036e-18 4542.488 5.851788e-18 4652.009
+1       JC 21 -2266.659 4575.318 1.811724e-25 4576.160 2.854250e-25 4680.742

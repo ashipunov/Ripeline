@@ -1,0 +1,43 @@
+#NEXUS
+[ID: 3523050398]
+begin taxa;
+	dimensions ntax=12;
+	taxlabels
+		Kubrickus_heus__K-008
+		Kubrickus_aus__K-001_efgh_-
+		Kubrickus_beus__K-002_efgh_-
+		Kubrickus_ceus__K-003_efgh_-
+		Kubrickus_deus__K-004
+		Kubrickus_eus__K-005
+		Kubrickus_feus__K-006_efgh_XYZ124
+		Kubrickus_geus__K-007_efgh_-
+		Kubrickus_ieus__K-009_efgh_-
+		Kubrickus_jeus__K-010
+		Kubrickus_keus__K-011
+		Kubrickus_leus__K-012
+		;
+end;
+begin trees;
+	translate
+		1	Kubrickus_heus__K-008,
+		2	Kubrickus_aus__K-001_efgh_-,
+		3	Kubrickus_beus__K-002_efgh_-,
+		4	Kubrickus_ceus__K-003_efgh_-,
+		5	Kubrickus_deus__K-004,
+		6	Kubrickus_eus__K-005,
+		7	Kubrickus_feus__K-006_efgh_XYZ124,
+		8	Kubrickus_geus__K-007_efgh_-,
+		9	Kubrickus_ieus__K-009_efgh_-,
+		10	Kubrickus_jeus__K-010,
+		11	Kubrickus_keus__K-011,
+		12	Kubrickus_leus__K-012
+		;
+   [Note: This tree contains information on the topology, 
+          branch lengths (if present), and the probability
+          of the partition indicated by the branch.]
+   tree con_all_compat = (1:2.447472e-02,4:1.304545e-03,((2:9.290317e-04,(((5:2.264919e-03,9:9.705803e-04)0.933:1.810312e-03,7:4.080357e-03)0.350:1.227960e-03,6:1.495680e-03)0.521:9.928238e-03)0.339:1.053822e-02,(3:1.140823e-03,((8:1.812739e-03,12:1.511745e-03)0.531:2.321660e-03,(10:3.032739e-03,11:1.417865e-03)0.919:2.414681e-03)0.872:1.988630e-02)0.490:1.525411e-02)0.820:2.242083e-02);
+
+   [Note: This tree contains information only on the topology
+          and branch lengths (median of the posterior probability density).]
+   tree con_all_compat = (1:2.447472e-02,4:1.304545e-03,((2:9.290317e-04,(((5:2.264919e-03,9:9.705803e-04):1.810312e-03,7:4.080357e-03):1.227960e-03,6:1.495680e-03):9.928238e-03):1.053822e-02,(3:1.140823e-03,((8:1.812739e-03,12:1.511745e-03):2.321660e-03,(10:3.032739e-03,11:1.417865e-03):2.414681e-03):1.988630e-02):1.525411e-02):2.242083e-02);
+end;

@@ -1,0 +1,1979 @@
+
+> ## this script takes semistrict data and outputs the maximal parsimony (MP) tree
+> ## it also uses bootstrapped trees to produce majority rule consensus
+> 
+> library(phangorn) # will be used to estimate MP tree, no external tool needed
+Loading required package: ape
+
+> library(shipunov)
+package 'shipunov', version 1.3-1
+
+> DATE <- format(Sys.time(), "%Y%m%d_%H%M%S") # timestamp
+
+> treesp <- read.table("_kubricks_treesp.txt", sep="\t", h=TRUE, as.is=TRUE) # read treesp to understand outgroups and outlliers
+
+> outgroups <- treesp$SPECIES.NEW[treesp$TYPE == "outgroup" & treesp$USE == 1]
+
+> outgroups <- gsub(" ", "_", outgroups)
+
+> conc <- read.dna("40_concatenated/semistrict.fasta", format="fasta")
+
+> LAB <- sub("__.*$", "", labels(conc))
+
+> OUT <- labels(conc)[LAB %in% outgroups]
+
+> outliers <- treesp$SPECIES.NEW[treesp$TYPE == "outlier" & treesp$USE == 1]
+
+> if (length(outliers) > 0) {
++  outliers <- gsub(" ", "_", outliers)
++  EXC <- labels(conc)[LAB %in% outliers]
++  conc <- conc[!labels(conc) %in% EXC, ] # remove outliers, if any
++ }
+
+> conc.phydat <- phyDat(conc) # "phangorn" requires everything in its own format
+
+> conc.pr <- pratchet(conc.phydat, maxit=100, k=20) # change these parsimony ratchet parameters if needed
+[1] "Best pscore so far: 117"
+[1] "Best pscore so far: 117"
+[1] "Best pscore so far: 117"
+[1] "Best pscore so far: 117"
+[1] "Best pscore so far: 117"
+[1] "Best pscore so far: 117"
+[1] "Best pscore so far: 117"
+[1] "Best pscore so far: 117"
+[1] "Best pscore so far: 117"
+[1] "Best pscore so far: 117"
+[1] "Best pscore so far: 117"
+[1] "Best pscore so far: 117"
+[1] "Best pscore so far: 117"
+[1] "Best pscore so far: 117"
+[1] "Best pscore so far: 117"
+[1] "Best pscore so far: 117"
+[1] "Best pscore so far: 117"
+[1] "Best pscore so far: 117"
+[1] "Best pscore so far: 117"
+[1] "Best pscore so far: 117"
+
+> conc.pr <- acctran(conc.pr, conc.phydat)
+
+> conc.ptrees <- bootstrap.phyDat(conc.phydat, pratchet, bs=100, multicore=TRUE) # change bootstrap replications if needed
+[1] "Best pscore so far: 104"
+[1] "Best pscore so far: 121"
+[1] "Best pscore so far: 108"
+[1] "Best pscore so far: 124"
+[1] "Best pscore so far: 121"
+[1] "Best pscore so far: 104"
+[1] "Best pscore so far: 124"
+[1] "Best pscore so far: 108"
+[1] "Best pscore so far: 124"
+[1] "Best pscore so far: 121"
+[1] "Best pscore so far: 104"
+[1] "Best pscore so far: 108"
+[1] "Best pscore so far: 124"
+[1] "Best pscore so far: 104"
+[1] "Best pscore so far: 120"
+[1] "Best pscore so far: 108"
+[1] "Best pscore so far: 124"
+[1] "Best pscore so far: 120"
+[1] "Best pscore so far: 104"
+[1] "Best pscore so far: 108"
+[1] "Best pscore so far: 124"
+[1] "Best pscore so far: 104"
+[1] "Best pscore so far: 120"
+[1] "Best pscore so far: 108"
+[1] "Best pscore so far: 124"
+[1] "Best pscore so far: 104"
+[1] "Best pscore so far: 120"
+[1] "Best pscore so far: 108"
+[1] "Best pscore so far: 124"
+[1] "Best pscore so far: 104"
+[1] "Best pscore so far: 120"
+[1] "Best pscore so far: 108"
+[1] "Best pscore so far: 104"
+[1] "Best pscore so far: 120"
+[1] "Best pscore so far: 124"
+[1] "Best pscore so far: 108"
+[1] "Best pscore so far: 104"
+[1] "Best pscore so far: 120"
+[1] "Best pscore so far: 124"
+[1] "Best pscore so far: 104"
+[1] "Best pscore so far: 108"
+[1] "Best pscore so far: 120"
+[1] "Best pscore so far: 121"
+[1] "Best pscore so far: 124"
+[1] "Best pscore so far: 108"
+[1] "Best pscore so far: 109"
+[1] "Best pscore so far: 130"
+[1] "Best pscore so far: 120"
+[1] "Best pscore so far: 121"
+[1] "Best pscore so far: 130"
+[1] "Best pscore so far: 121"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 120"
+[1] "Best pscore so far: 108"
+[1] "Best pscore so far: 121"
+[1] "Best pscore so far: 104"
+[1] "Best pscore so far: 130"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 121"
+[1] "Best pscore so far: 108"
+[1] "Best pscore so far: 104"
+[1] "Best pscore so far: 130"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 121"
+[1] "Best pscore so far: 108"
+[1] "Best pscore so far: 130"
+[1] "Best pscore so far: 121"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 104"
+[1] "Best pscore so far: 108"
+[1] "Best pscore so far: 121"
+[1] "Best pscore so far: 130"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 104"
+[1] "Best pscore so far: 121"
+[1] "Best pscore so far: 108"
+[1] "Best pscore so far: 130"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 104"
+[1] "Best pscore so far: 121"
+[1] "Best pscore so far: 108"
+[1] "Best pscore so far: 130"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 104"
+[1] "Best pscore so far: 121"
+[1] "Best pscore so far: 112"
+[1] "Best pscore so far: 130"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 108"
+[1] "Best pscore so far: 104"
+[1] "Best pscore so far: 112"
+[1] "Best pscore so far: 130"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 108"
+[1] "Best pscore so far: 104"
+[1] "Best pscore so far: 110"
+[1] "Best pscore so far: 130"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 104"
+[1] "Best pscore so far: 119"
+[1] "Best pscore so far: 110"
+[1] "Best pscore so far: 108"
+[1] "Best pscore so far: 104"
+[1] "Best pscore so far: 117"
+[1] "Best pscore so far: 110"
+[1] "Best pscore so far: 108"
+[1] "Best pscore so far: 117"
+[1] "Best pscore so far: 110"
+[1] "Best pscore so far: 104"
+[1] "Best pscore so far: 103"
+[1] "Best pscore so far: 117"
+[1] "Best pscore so far: 108"
+[1] "Best pscore so far: 110"
+[1] "Best pscore so far: 103"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 108"
+[1] "Best pscore so far: 110"
+[1] "Best pscore so far: 117"
+[1] "Best pscore so far: 103"
+[1] "Best pscore so far: 108"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 110"
+[1] "Best pscore so far: 117"
+[1] "Best pscore so far: 108"
+[1] "Best pscore so far: 103"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 110"
+[1] "Best pscore so far: 108"
+[1] "Best pscore so far: 117"
+[1] "Best pscore so far: 103"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 110"
+[1] "Best pscore so far: 108"
+[1] "Best pscore so far: 117"
+[1] "Best pscore so far: 103"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 108"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 110"
+[1] "Best pscore so far: 117"
+[1] "Best pscore so far: 108"
+[1] "Best pscore so far: 130"
+[1] "Best pscore so far: 103"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 108"
+[1] "Best pscore so far: 117"
+[1] "Best pscore so far: 130"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 103"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 108"
+[1] "Best pscore so far: 117"
+[1] "Best pscore so far: 130"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 103"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 108"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 120"
+[1] "Best pscore so far: 107"
+[1] "Best pscore so far: 103"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 130"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 107"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 119"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 119"
+[1] "Best pscore so far: 103"
+[1] "Best pscore so far: 107"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 130"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 107"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 119"
+[1] "Best pscore so far: 120"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 130"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 107"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 119"
+[1] "Best pscore so far: 120"
+[1] "Best pscore so far: 107"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 130"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 120"
+[1] "Best pscore so far: 119"
+[1] "Best pscore so far: 107"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 120"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 130"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 119"
+[1] "Best pscore so far: 107"
+[1] "Best pscore so far: 120"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 130"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 120"
+[1] "Best pscore so far: 107"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 119"
+[1] "Best pscore so far: 130"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 120"
+[1] "Best pscore so far: 107"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 119"
+[1] "Best pscore so far: 130"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 120"
+[1] "Best pscore so far: 107"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 119"
+[1] "Best pscore so far: 119"
+[1] "Best pscore so far: 119"
+[1] "Best pscore so far: 120"
+[1] "Best pscore so far: 119"
+[1] "Best pscore so far: 118"
+[1] "Best pscore so far: 119"
+[1] "Best pscore so far: 119"
+[1] "Best pscore so far: 120"
+[1] "Best pscore so far: 119"
+[1] "Best pscore so far: 134"
+[1] "Best pscore so far: 118"
+[1] "Best pscore so far: 120"
+[1] "Best pscore so far: 119"
+[1] "Best pscore so far: 134"
+[1] "Best pscore so far: 96"
+[1] "Best pscore so far: 119"
+[1] "Best pscore so far: 118"
+[1] "Best pscore so far: 134"
+[1] "Best pscore so far: 96"
+[1] "Best pscore so far: 119"
+[1] "Best pscore so far: 134"
+[1] "Best pscore so far: 118"
+[1] "Best pscore so far: 119"
+[1] "Best pscore so far: 96"
+[1] "Best pscore so far: 134"
+[1] "Best pscore so far: 119"
+[1] "Best pscore so far: 118"
+[1] "Best pscore so far: 96"
+[1] "Best pscore so far: 119"
+[1] "Best pscore so far: 134"
+[1] "Best pscore so far: 119"
+[1] "Best pscore so far: 96"
+[1] "Best pscore so far: 118"
+[1] "Best pscore so far: 134"
+[1] "Best pscore so far: 120"
+[1] "Best pscore so far: 96"
+[1] "Best pscore so far: 118"
+[1] "Best pscore so far: 120"
+[1] "Best pscore so far: 134"
+[1] "Best pscore so far: 96"
+[1] "Best pscore so far: 120"
+[1] "Best pscore so far: 118"
+[1] "Best pscore so far: 134"
+[1] "Best pscore so far: 96"
+[1] "Best pscore so far: 120"
+[1] "Best pscore so far: 134"
+[1] "Best pscore so far: 118"
+[1] "Best pscore so far: 96"
+[1] "Best pscore so far: 120"
+[1] "Best pscore so far: 134"
+[1] "Best pscore so far: 96"
+[1] "Best pscore so far: 118"
+[1] "Best pscore so far: 120"
+[1] "Best pscore so far: 107"
+[1] "Best pscore so far: 96"
+[1] "Best pscore so far: 122"
+[1] "Best pscore so far: 120"
+[1] "Best pscore so far: 118"
+[1] "Best pscore so far: 122"
+[1] "Best pscore so far: 107"
+[1] "Best pscore so far: 120"
+[1] "Best pscore so far: 118"
+[1] "Best pscore so far: 122"
+[1] "Best pscore so far: 107"
+[1] "Best pscore so far: 120"
+[1] "Best pscore so far: 118"
+[1] "Best pscore so far: 122"
+[1] "Best pscore so far: 107"
+[1] "Best pscore so far: 118"
+[1] "Best pscore so far: 120"
+[1] "Best pscore so far: 122"
+[1] "Best pscore so far: 107"
+[1] "Best pscore so far: 118"
+[1] "Best pscore so far: 120"
+[1] "Best pscore so far: 122"
+[1] "Best pscore so far: 115"
+[1] "Best pscore so far: 118"
+[1] "Best pscore so far: 107"
+[1] "Best pscore so far: 122"
+[1] "Best pscore so far: 115"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 118"
+[1] "Best pscore so far: 122"
+[1] "Best pscore so far: 107"
+[1] "Best pscore so far: 115"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 118"
+[1] "Best pscore so far: 122"
+[1] "Best pscore so far: 115"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 118"
+[1] "Best pscore so far: 107"
+[1] "Best pscore so far: 122"
+[1] "Best pscore so far: 115"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 118"
+[1] "Best pscore so far: 107"
+[1] "Best pscore so far: 115"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 122"
+[1] "Best pscore so far: 118"
+[1] "Best pscore so far: 106"
+[1] "Best pscore so far: 115"
+[1] "Best pscore so far: 110"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 107"
+[1] "Best pscore so far: 106"
+[1] "Best pscore so far: 115"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 110"
+[1] "Best pscore so far: 107"
+[1] "Best pscore so far: 115"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 106"
+[1] "Best pscore so far: 110"
+[1] "Best pscore so far: 121"
+[1] "Best pscore so far: 115"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 106"
+[1] "Best pscore so far: 121"
+[1] "Best pscore so far: 110"
+[1] "Best pscore so far: 115"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 106"
+[1] "Best pscore so far: 110"
+[1] "Best pscore so far: 128"
+[1] "Best pscore so far: 121"
+[1] "Best pscore so far: 106"
+[1] "Best pscore so far: 110"
+[1] "Best pscore so far: 128"
+[1] "Best pscore so far: 121"
+[1] "Best pscore so far: 106"
+[1] "Best pscore so far: 110"
+[1] "Best pscore so far: 128"
+[1] "Best pscore so far: 106"
+[1] "Best pscore so far: 121"
+[1] "Best pscore so far: 128"
+[1] "Best pscore so far: 110"
+[1] "Best pscore so far: 121"
+[1] "Best pscore so far: 106"
+[1] "Best pscore so far: 128"
+[1] "Best pscore so far: 110"
+[1] "Best pscore so far: 106"
+[1] "Best pscore so far: 121"
+[1] "Best pscore so far: 110"
+[1] "Best pscore so far: 128"
+[1] "Best pscore so far: 106"
+[1] "Best pscore so far: 121"
+[1] "Best pscore so far: 116"
+[1] "Best pscore so far: 110"
+[1] "Best pscore so far: 128"
+[1] "Best pscore so far: 116"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 121"
+[1] "Best pscore so far: 121"
+[1] "Best pscore so far: 121"
+[1] "Best pscore so far: 116"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 128"
+[1] "Best pscore so far: 121"
+[1] "Best pscore so far: 121"
+[1] "Best pscore so far: 116"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 121"
+[1] "Best pscore so far: 128"
+[1] "Best pscore so far: 116"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 121"
+[1] "Best pscore so far: 121"
+[1] "Best pscore so far: 116"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 121"
+[1] "Best pscore so far: 115"
+[1] "Best pscore so far: 128"
+[1] "Best pscore so far: 121"
+[1] "Best pscore so far: 116"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 115"
+[1] "Best pscore so far: 128"
+[1] "Best pscore so far: 121"
+[1] "Best pscore so far: 116"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 121"
+[1] "Best pscore so far: 116"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 147"
+[1] "Best pscore so far: 121"
+[1] "Best pscore so far: 115"
+[1] "Best pscore so far: 116"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 147"
+[1] "Best pscore so far: 121"
+[1] "Best pscore so far: 115"
+[1] "Best pscore so far: 116"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 147"
+[1] "Best pscore so far: 126"
+[1] "Best pscore so far: 124"
+[1] "Best pscore so far: 147"
+[1] "Best pscore so far: 115"
+[1] "Best pscore so far: 126"
+[1] "Best pscore so far: 124"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 147"
+[1] "Best pscore so far: 115"
+[1] "Best pscore so far: 124"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 126"
+[1] "Best pscore so far: 147"
+[1] "Best pscore so far: 124"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 126"
+[1] "Best pscore so far: 115"
+[1] "Best pscore so far: 147"
+[1] "Best pscore so far: 124"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 126"
+[1] "Best pscore so far: 147"
+[1] "Best pscore so far: 124"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 115"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 126"
+[1] "Best pscore so far: 147"
+[1] "Best pscore so far: 124"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 115"
+[1] "Best pscore so far: 126"
+[1] "Best pscore so far: 147"
+[1] "Best pscore so far: 124"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 126"
+[1] "Best pscore so far: 115"
+[1] "Best pscore so far: 147"
+[1] "Best pscore so far: 111"
+[1] "Best pscore so far: 124"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 126"
+[1] "Best pscore so far: 115"
+[1] "Best pscore so far: 111"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 124"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 111"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 123"
+[1] "Best pscore so far: 126"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 124"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 111"
+[1] "Best pscore so far: 123"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 135"
+[1] "Best pscore so far: 126"
+[1] "Best pscore so far: 111"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 123"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 135"
+[1] "Best pscore so far: 119"
+[1] "Best pscore so far: 111"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 123"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 119"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 135"
+[1] "Best pscore so far: 111"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 119"
+[1] "Best pscore so far: 123"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 135"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 111"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 119"
+[1] "Best pscore so far: 135"
+[1] "Best pscore so far: 123"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 111"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 119"
+[1] "Best pscore so far: 135"
+[1] "Best pscore so far: 123"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 111"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 119"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 135"
+[1] "Best pscore so far: 111"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 123"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 119"
+[1] "Best pscore so far: 135"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 135"
+[1] "Best pscore so far: 135"
+[1] "Best pscore so far: 119"
+[1] "Best pscore so far: 123"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 135"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 119"
+[1] "Best pscore so far: 135"
+[1] "Best pscore so far: 135"
+[1] "Best pscore so far: 123"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 119"
+[1] "Best pscore so far: 135"
+[1] "Best pscore so far: 135"
+[1] "Best pscore so far: 123"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 142"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 135"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 119"
+[1] "Best pscore so far: 142"
+[1] "Best pscore so far: 135"
+[1] "Best pscore so far: 135"
+[1] "Best pscore so far: 130"
+[1] "Best pscore so far: 142"
+[1] "Best pscore so far: 130"
+[1][1] "Best pscore so far: 135"
+ "Best pscore so far: 135"
+[1] "Best pscore so far: 142"
+[1] "Best pscore so far: 130"
+[1] "Best pscore so far: 135"
+[1] "Best pscore so far: 135"
+[1] "Best pscore so far: 130"
+[1] "Best pscore so far: 142"
+[1] "Best pscore so far: 130"
+[1] "Best pscore so far: 135"
+[1] "Best pscore so far: 135"
+[1] "Best pscore so far: 142"
+[1] "Best pscore so far: 135"
+[1] "Best pscore so far: 130"
+[1] "Best pscore so far: 135"
+[1] "Best pscore so far: 142"
+[1] "Best pscore so far: 130"
+[1] "Best pscore so far: 135"
+[1] "Best pscore so far: 142"
+[1] "Best pscore so far: 135"
+[1] "Best pscore so far: 104"
+[1] "Best pscore so far: 130"
+[1] "Best pscore so far: 142"
+[1] "Best pscore so far: 135"
+[1] "Best pscore so far: 104"
+[1] "Best pscore so far: 142"
+[1] "Best pscore so far: 130"
+[1] "Best pscore so far: 104"
+[1] "Best pscore so far: 135"
+[1] "Best pscore so far: 130"
+[1] "Best pscore so far: 142"
+[1] "Best pscore so far: 103"
+[1] "Best pscore so far: 95"
+[1] "Best pscore so far: 130"
+[1] "Best pscore so far: 135"
+[1] "Best pscore so far: 95"
+[1] "Best pscore so far: 124"
+[1] "Best pscore so far: 103"
+[1] "Best pscore so far: 135"
+[1] "Best pscore so far: 95"
+[1] "Best pscore so far: 103"
+[1] "Best pscore so far: 124"
+[1] "Best pscore so far: 95"
+[1] "Best pscore so far: 135"
+[1] "Best pscore so far: 103"
+[1] "Best pscore so far: 128"
+[1] "Best pscore so far: 95"
+[1] "Best pscore so far: 124"
+[1] "Best pscore so far: 95"
+[1] "Best pscore so far: 103"
+[1] "Best pscore so far: 127"
+[1] "Best pscore so far: 124"
+[1] "Best pscore so far: 95"
+[1] "Best pscore so far: 127"
+[1] "Best pscore so far: 103"
+[1] "Best pscore so far: 124"
+[1] "Best pscore so far: 95"
+[1] "Best pscore so far: 103"
+[1] "Best pscore so far: 127"
+[1] "Best pscore so far: 95"
+[1] "Best pscore so far: 124"
+[1] "Best pscore so far: 103"
+[1] "Best pscore so far: 127"
+[1] "Best pscore so far: 95"
+[1] "Best pscore so far: 103"
+[1] "Best pscore so far: 124"
+[1] "Best pscore so far: 127"
+[1] "Best pscore so far: 95"
+[1] "Best pscore so far: 103"
+[1] "Best pscore so far: 124"
+[1] "Best pscore so far: 121"
+[1] "Best pscore so far: 127"
+[1] "Best pscore so far: 121"
+[1] "Best pscore so far: 124"
+[1] "Best pscore so far: 127"
+[1] "Best pscore so far: 116"
+[1] "Best pscore so far: 121"
+[1] "Best pscore so far: 124"
+[1] "Best pscore so far: 116"
+[1] "Best pscore so far: 127"
+[1] "Best pscore so far: 116"
+[1] "Best pscore so far: 124"
+[1] "Best pscore so far: 127"
+[1] "Best pscore so far: 121"
+[1] "Best pscore so far: 116"
+[1] "Best pscore so far: 118"
+[1] "Best pscore so far: 127"
+[1] "Best pscore so far: 121"
+[1] "Best pscore so far: 116"
+[1][1] "Best pscore so far: 121"
+ "Best pscore so far: 123"
+[1] "Best pscore so far: 116"
+[1] "Best pscore so far: 118"
+[1] "Best pscore so far: 123"
+[1] "Best pscore so far: 121"
+[1] "Best pscore so far: 116"
+[1] "Best pscore so far: 118"
+[1] "Best pscore so far: 123"
+[1] "Best pscore so far: 121"
+[1] "Best pscore so far: 116"
+[1] "Best pscore so far: 118"
+[1] "Best pscore so far: 123"
+[1] "Best pscore so far: 121"
+[1] "Best pscore so far: 116"
+[1] "Best pscore so far: 118"
+[1] "Best pscore so far: 123"
+[1][1] "Best pscore so far: 121"
+ "Best pscore so far: 116"
+[1] "Best pscore so far: 118"
+[1] "Best pscore so far: 123"
+[1] "Best pscore so far: 116"
+[1] "Best pscore so far: 118"
+[1] "Best pscore so far: 121"
+[1] "Best pscore so far: 112"
+[1] "Best pscore so far: 123"
+[1] "Best pscore so far: 118"
+[1] "Best pscore so far: 105"
+[1] "Best pscore so far: 112"
+[1] "Best pscore so far: 105"
+[1] "Best pscore so far: 118"
+[1] "Best pscore so far: 123"
+[1] "Best pscore so far: 118"
+[1] "Best pscore so far: 105"
+[1] "Best pscore so far: 112"
+[1] "Best pscore so far: 123"
+[1] "Best pscore so far: 118"
+[1] "Best pscore so far: 112"
+[1] "Best pscore so far: 105"
+[1] "Best pscore so far: 91"
+[1] "Best pscore so far: 112"
+[1] "Best pscore so far: 105"
+[1] "Best pscore so far: 91"
+[1][1] "Best pscore so far: 123"
+ "Best pscore so far: 112"
+[1] "Best pscore so far: 105"
+[1] "Best pscore so far: 91"
+[1] "Best pscore so far: 112"
+[1] "Best pscore so far: 123"
+[1] "Best pscore so far: 105"
+[1] "Best pscore so far: 91"
+[1] "Best pscore so far: 112"
+[1] "Best pscore so far: 126"
+[1] "Best pscore so far: 105"
+[1] "Best pscore so far: 91"
+[1] "Best pscore so far: 112"
+[1] "Best pscore so far: 126"
+[1] "Best pscore so far: 105"
+[1] "Best pscore so far: 112"
+[1] "Best pscore so far: 91"
+[1] "Best pscore so far: 126"
+[1] "Best pscore so far: 112"
+[1] "Best pscore so far: 105"
+[1] "Best pscore so far: 91"
+[1] "Best pscore so far: 117"
+[1] "Best pscore so far: 126"
+[1] "Best pscore so far: 105"
+[1] "Best pscore so far: 117"
+[1] "Best pscore so far: 91"
+[1] "Best pscore so far: 111"
+[1] "Best pscore so far: 126"
+[1] "Best pscore so far: 117"
+[1] "Best pscore so far: 111"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 91"
+[1] "Best pscore so far: 117"
+[1] "Best pscore so far: 126"
+[1] "Best pscore so far: 110"
+[1] "Best pscore so far: 117"
+[1] "Best pscore so far: 91"
+[1] "Best pscore so far: 126"
+[1] "Best pscore so far: 110"
+[1] "Best pscore so far: 117"
+[1] "Best pscore so far: 91"
+[1] "Best pscore so far: 110"
+[1] "Best pscore so far: 126"
+[1] "Best pscore so far: 117"
+[1] "Best pscore so far: 124"
+[1] "Best pscore so far: 110"
+[1] "Best pscore so far: 117"
+[1] "Best pscore so far: 126"
+[1] "Best pscore so far: 124"
+[1] "Best pscore so far: 110"
+[1] "Best pscore so far: 117"
+[1] "Best pscore so far: 110"
+[1] "Best pscore so far: 124"
+[1] "Best pscore so far: 117"
+[1] "Best pscore so far: 126"
+[1] "Best pscore so far: 110"
+[1] "Best pscore so far: 117"
+[1] "Best pscore so far: 124"
+[1] "Best pscore so far: 126"
+[1] "Best pscore so far: 110"
+[1] "Best pscore so far: 112"
+[1] "Best pscore so far: 131"
+[1] "Best pscore so far: 124"
+[1] "Best pscore so far: 110"
+[1] "Best pscore so far: 112"
+[1] "Best pscore so far: 131"
+[1] "Best pscore so far: 124"
+[1] "Best pscore so far: 110"
+[1] "Best pscore so far: 112"
+[1] "Best pscore so far: 102"
+[1] "Best pscore so far: 131"
+[1] "Best pscore so far: 124"
+[1] "Best pscore so far: 112"
+[1] "Best pscore so far: 102"
+[1] "Best pscore so far: 131"
+[1] "Best pscore so far: 112"
+[1] "Best pscore so far: 124"
+[1] "Best pscore so far: 102"
+[1] "Best pscore so far: 112"
+[1] "Best pscore so far: 131"
+[1] "Best pscore so far: 124"
+[1] "Best pscore so far: 102"
+[1] "Best pscore so far: 112"
+[1] "Best pscore so far: 131"
+[1] "Best pscore so far: 124"
+[1] "Best pscore so far: 101"
+[1] "Best pscore so far: 112"
+[1] "Best pscore so far: 131"
+[1] "Best pscore so far: 101"
+[1] "Best pscore so far: 112"
+[1] "Best pscore so far: 124"
+[1] "Best pscore so far: 131"
+[1] "Best pscore so far: 101"
+[1] "Best pscore so far: 112"
+[1] "Best pscore so far: 106"
+[1] "Best pscore so far: 131"
+[1] "Best pscore so far: 101"
+[1] "Best pscore so far: 106"
+[1] "Best pscore so far: 112"
+[1] "Best pscore so far: 101"
+[1] "Best pscore so far: 135"
+[1] "Best pscore so far: 131"
+[1] "Best pscore so far: 106"
+[1] "Best pscore so far: 135"
+[1] "Best pscore so far: 101"
+[1] "Best pscore so far: 131"
+[1] "Best pscore so far: 106"
+[1] "Best pscore so far: 135"
+[1] "Best pscore so far: 112"
+[1] "Best pscore so far: 101"
+[1] "Best pscore so far: 106"
+[1][1] "Best pscore so far: 112" "Best pscore so far: 135"
+
+[1] "Best pscore so far: 101"
+[1] "Best pscore so far: 135"
+[1] "Best pscore so far: 106"
+[1] "Best pscore so far: 112"
+[1] "Best pscore so far: 101"
+[1] "Best pscore so far: 135"
+[1] "Best pscore so far: 106"
+[1] "Best pscore so far: 112"
+[1] "Best pscore so far: 101"
+[1] "Best pscore so far: 135"
+[1] "Best pscore so far: 106"
+[1] "Best pscore so far: 112"
+[1] "Best pscore so far: 134"
+[1] "Best pscore so far: 135"
+[1] "Best pscore so far: 134"
+[1] "Best pscore so far: 106"
+[1] "Best pscore so far: 112"
+[1] "Best pscore so far: 135"
+[1] "Best pscore so far: 134"
+[1] "Best pscore so far: 135"
+[1] "Best pscore so far: 106"
+[1] "Best pscore so far: 112"
+[1] "Best pscore so far: 134"
+[1] "Best pscore so far: 135"
+[1] "Best pscore so far: 106"
+[1] "Best pscore so far: 112"
+[1] "Best pscore so far: 134"
+[1] "Best pscore so far: 89"
+[1] "Best pscore so far: 126"
+[1] "Best pscore so far: 89"
+[1] "Best pscore so far: 134"
+[1] "Best pscore so far: 112"
+[1] "Best pscore so far: 126"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 89"
+[1] "Best pscore so far: 134"
+[1] "Best pscore so far: 126"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 112"
+[1] "Best pscore so far: 89"
+[1] "Best pscore so far: 134"
+[1] "Best pscore so far: 126"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 89"
+[1] "Best pscore so far: 134"
+[1] "Best pscore so far: 112"
+[1] "Best pscore so far: 89"
+[1] "Best pscore so far: 126"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 134"
+[1] "Best pscore so far: 115"
+[1] "Best pscore so far: 89"
+[1] "Best pscore so far: 126"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 134"
+[1] "Best pscore so far: 115"
+[1][1] "Best pscore so far: 125"
+ "Best pscore so far: 89"
+[1] "Best pscore so far: 126"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 115"
+[1][1] "Best pscore so far: 89" "Best pscore so far: 125"
+
+[1] "Best pscore so far: 126"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 89"
+[1] "Best pscore so far: 125"
+[1] "Best pscore so far: 115"
+[1] "Best pscore so far: 126"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 125"
+[1] "Best pscore so far: 115"
+[1] "Best pscore so far: 89"
+[1] "Best pscore so far: 126"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 125"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 129"
+[1] "Best pscore so far: 115"
+[1] "Best pscore so far: 129"
+[1] "Best pscore so far: 126"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 125"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 115"
+[1] "Best pscore so far: 112"
+[1] "Best pscore so far: 129"
+[1] "Best pscore so far: 125"
+[1] "Best pscore so far: 115"
+[1] "Best pscore so far: 112"
+[1] "Best pscore so far: 129"
+[1] "Best pscore so far: 125"
+[1] "Best pscore so far: 112"
+[1] "Best pscore so far: 115"
+[1] "Best pscore so far: 129"
+[1] "Best pscore so far: 125"
+[1] "Best pscore so far: 112"
+[1] "Best pscore so far: 129"
+[1] "Best pscore so far: 115"
+[1] "Best pscore so far: 125"
+[1] "Best pscore so far: 129"
+[1] "Best pscore so far: 112"
+[1] "Best pscore so far: 115"
+[1] "Best pscore so far: 125"
+[1] "Best pscore so far: 129"
+[1] "Best pscore so far: 141"
+[1] "Best pscore so far: 114"
+[1] "Best pscore so far: 112"
+[1] "Best pscore so far: 129"
+[1] "Best pscore so far: 141"
+[1] "Best pscore so far: 114"
+[1] "Best pscore so far: 129"
+[1] "Best pscore so far: 141"
+[1] "Best pscore so far: 112"
+[1] "Best pscore so far: 114"
+[1] "Best pscore so far: 129"
+[1] "Best pscore so far: 140"
+[1] "Best pscore so far: 114"
+[1] "Best pscore so far: 137"
+[1] "Best pscore so far: 112"
+[1] "Best pscore so far: 140"
+[1] "Best pscore so far: 114"
+[1] "Best pscore so far: 137"
+[1] "Best pscore so far: 140"
+[1] "Best pscore so far: 114"
+[1] "Best pscore so far: 112"
+[1] "Best pscore so far: 137"
+[1] "Best pscore so far: 140"
+[1] "Best pscore so far: 114"
+[1] "Best pscore so far: 137"
+[1] "Best pscore so far: 140"
+[1] "Best pscore so far: 112"
+[1] "Best pscore so far: 114"
+[1] "Best pscore so far: 137"
+[1] "Best pscore so far: 140"
+[1] "Best pscore so far: 114"
+[1] "Best pscore so far: 137"
+[1] "Best pscore so far: 140"
+[1] "Best pscore so far: 112"
+[1] "Best pscore so far: 114"
+[1] "Best pscore so far: 137"
+[1] "Best pscore so far: 140"
+[1] "Best pscore so far: 114"
+[1] "Best pscore so far: 137"
+[1] "Best pscore so far: 117"
+[1] "Best pscore so far: 140"
+[1] "Best pscore so far: 119"
+[1] "Best pscore so far: 137"
+[1] "Best pscore so far: 117"
+[1] "Best pscore so far: 140"
+[1] "Best pscore so far: 119"
+[1] "Best pscore so far: 137"
+[1] "Best pscore so far: 106"
+[1] "Best pscore so far: 117"
+[1] "Best pscore so far: 119"
+[1] "Best pscore so far: 137"
+[1] "Best pscore so far: 106"
+[1] "Best pscore so far: 117"
+[1] "Best pscore so far: 124"
+[1] "Best pscore so far: 119"
+[1] "Best pscore so far: 106"
+[1] "Best pscore so far: 124"
+[1] "Best pscore so far: 117"
+[1] "Best pscore so far: 119"
+[1] "Best pscore so far: 106"
+[1] "Best pscore so far: 124"
+[1] "Best pscore so far: 117"
+[1] "Best pscore so far: 106"
+[1] "Best pscore so far: 119"
+[1] "Best pscore so far: 124"
+[1] "Best pscore so far: 124"
+[1] "Best pscore so far: 117"
+[1] "Best pscore so far: 119"
+[1] "Best pscore so far: 105"
+[1] "Best pscore so far: 124"
+[1] "Best pscore so far: 117"
+[1] "Best pscore so far: 105"
+[1] "Best pscore so far: 119"
+[1] "Best pscore so far: 124"
+[1] "Best pscore so far: 124"
+[1] "Best pscore so far: 117"
+[1] "Best pscore so far: 105"
+[1] "Best pscore so far: 119"
+[1] "Best pscore so far: 124"
+[1] "Best pscore so far: 105"
+[1] "Best pscore so far: 117"
+[1] "Best pscore so far: 119"
+[1] "Best pscore so far: 124"
+[1] "Best pscore so far: 105"
+[1] "Best pscore so far: 117"
+[1] "Best pscore so far: 119"
+[1] "Best pscore so far: 124"
+[1] "Best pscore so far: 105"
+[1] "Best pscore so far: 78"
+[1] "Best pscore so far: 119"
+[1] "Best pscore so far: 117"
+[1] "Best pscore so far: 105"
+[1] "Best pscore so far: 78"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 119"
+[1] "Best pscore so far: 117"
+[1] "Best pscore so far: 78"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 105"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 119"
+[1] "Best pscore so far: 117"
+[1] "Best pscore so far: 105"
+[1] "Best pscore so far: 78"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 119"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 117"
+[1] "Best pscore so far: 105"
+[1] "Best pscore so far: 119"
+[1] "Best pscore so far: 78"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 127"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 117"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 119"
+[1] "Best pscore so far: 127"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 78"
+[1] "Best pscore so far: 117"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 119"
+[1] "Best pscore so far: 127"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 117"
+[1] "Best pscore so far: 119"
+[1] "Best pscore so far: 78"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 127"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 117"
+[1] "Best pscore so far: 119"
+[1] "Best pscore so far: 78"
+[1] "Best pscore so far: 127"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 117"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 119"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 127"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 119"
+[1] "Best pscore so far: 117"
+[1] "Best pscore so far: 78"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 112"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 127"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 117"
+[1] "Best pscore so far: 78"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 112"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 125"
+[1] "Best pscore so far: 127"Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 125"
+[1] "Best pscore so far: 127"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 78"
+[1] "Best pscore so far: 112"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 125"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 127"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 108"
+[1] "Best pscore so far: 112"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 125"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 127"
+[1] "Best pscore so far: 108"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 127"
+[1] "Best pscore so far: 112"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 125"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 108"
+[1] "Best pscore so far: 127"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 125"
+[1] "Best pscore so far: 108"
+[1] "Best pscore so far: 112"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 127"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 108"
+[1] "Best pscore so far: 125"
+[1] "Best pscore so far: 127"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 112"
+[1] "Best pscore so far: 108"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 125"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 127"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 108"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 125"
+[1] "Best pscore so far: 112"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 108"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 127"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 108"
+[1] "Best pscore so far: 125"
+[1] "Best pscore so far: 127"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 112"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 108"
+[1] "Best pscore so far: 125"
+[1] "Best pscore so far: 127"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 112"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 108"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 120"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 111"
+[1] "Best pscore so far: 127"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 120"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 112"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+ Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) : some trees were rooted, unrooted all
+
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 111"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 120"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 127"
+[1] "Best pscore so far: 127"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 111"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 120"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 127"
+[1] "Best pscore so far: 127"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 111"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 120"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 127"
+[1] "Best pscore so far: 132"
+[1] "Best pscore so far: 111"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 127"
+[1] "Best pscore so far: 120"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+ 
+  some trees were rooted, unrooted all
+ some trees were rooted, unrooted all
+[1] "Best pscore so far: 132"
+[1] "Best pscore so far: 111"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 127"
+[1] "Best pscore so far: 120"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 132"
+[1] "Best pscore so far: 111"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 127"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 120"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+ Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) : some trees were rooted, unrooted all
+
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 132"
+[1] "Best pscore so far: 127"
+[1] "Best pscore so far: 111"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 132"
+[1] "Best pscore so far: 120"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 130"
+[1] "Best pscore so far: 127"
+[1] "Best pscore so far: 111"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 120"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 130"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 127"
+[1] "Best pscore so far: 111"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 130"
+[1] "Best pscore so far: 120"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 127"
+[1] "Best pscore so far: 111"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 130"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 102"
+[1] "Best pscore so far: 120"
+[1] "Best pscore so far: 130"
+[1] "Best pscore so far: 127"
+[1] "Best pscore so far: 102"
+[1] "Best pscore so far: 120"
+[1] "Best pscore so far: 128"
+[1] "Best pscore so far: 130"
+[1] "Best pscore so far: 102"
+[1] "Best pscore so far: 120"
+[1] "Best pscore so far: 128"
+[1] "Best pscore so far: 130"
+[1] "Best pscore so far: 102"
+[1] "Best pscore so far: 120"
+[1] "Best pscore so far: 128"
+[1] "Best pscore so far: 130"
+[1] "Best pscore so far: 102"
+[1] "Best pscore so far: 120"
+[1] "Best pscore so far: 128"
+[1] "Best pscore so far: 130"
+[1] "Best pscore so far: 120"
+[1] "Best pscore so far: 128"
+[1] "Best pscore so far: 102"
+[1] "Best pscore so far: 130"
+[1] "Best pscore so far: 120"
+[1] "Best pscore so far: 128"
+[1] "Best pscore so far: 103"
+[1] "Best pscore so far: 102"
+[1] "Best pscore so far: 120"
+[1] "Best pscore so far: 128"
+[1] "Best pscore so far: 103"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 120"
+[1] "Best pscore so far: 102"
+[1] "Best pscore so far: 103"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 128"
+[1] "Best pscore so far: 120"
+[1] "Best pscore so far: 102"
+[1] "Best pscore so far: 128"
+[1] "Best pscore so far: 103"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 120"
+[1] "Best pscore so far: 102"
+[1] "Best pscore so far: 128"
+[1] "Best pscore so far: 103"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 103"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 102"
+[1] "Best pscore so far: 128"
+[1] "Best pscore so far: 119"
+[1] "Best pscore so far: 103"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 106"
+[1] "Best pscore so far: 119"
+[1] "Best pscore so far: 119"
+[1] "Best pscore so far: 106"
+[1] "Best pscore so far: 103"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 119"
+[1] "Best pscore so far: 106"
+[1] "Best pscore so far: 119"
+[1] "Best pscore so far: 103"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 119"
+[1] "Best pscore so far: 106"
+[1] "Best pscore so far: 119"
+[1] "Best pscore so far: 103"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 106"
+[1] "Best pscore so far: 119"
+[1] "Best pscore so far: 106"
+[1] "Best pscore so far: 103"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 106"
+[1] "Best pscore so far: 119"
+[1][1] "Best pscore so far: 106" "Best pscore so far: 110"
+
+[1] "Best pscore so far: 119"
+[1] "Best pscore so far: 106"
+[1] "Best pscore so far: 110"
+[1] "Best pscore so far: 119"
+[1] "Best pscore so far: 106"
+[1] "Best pscore so far: 102"
+[1] "Best pscore so far: 106"
+[1] "Best pscore so far: 110"
+[1] "Best pscore so far: 123"
+[1] "Best pscore so far: 123"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 102"
+[1] "Best pscore so far: 110"
+[1] "Best pscore so far: 123"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 102"
+[1] "Best pscore so far: 110"
+[1] "Best pscore so far: 123"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 123"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 102"
+[1] "Best pscore so far: 110"
+[1] "Best pscore so far: 123"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 102"
+[1] "Best pscore so far: 123"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 110"
+[1] "Best pscore so far: 123"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 102"
+[1] "Best pscore so far: 123"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 110"
+[1] "Best pscore so far: 123"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 102"
+[1] "Best pscore so far: 110"
+[1] "Best pscore so far: 123"
+Warning in mRF2(tree1, tree2, normalize, check.labels, rooted) :
+  some trees were rooted, unrooted all
+[1] "Best pscore so far: 102"
+[1] "Best pscore so far: 110"
+[1] "Best pscore so far: 110"
+[1] "Best pscore so far: 102"
+[1] "Best pscore so far: 102"
+[1] "Best pscore so far: 102"
+[1] "Best pscore so far: 111"
+[1] "Best pscore so far: 110"
+[1] "Best pscore so far: 110"
+[1] "Best pscore so far: 110"
+[1] "Best pscore so far: 110"
+[1] "Best pscore so far: 110"
+[1] "Best pscore so far: 110"
+[1] "Best pscore so far: 110"
+[1] "Best pscore so far: 110"
+[1] "Best pscore so far: 110"
+[1] "Best pscore so far: 110"
+
+> conc.prr <- Root1(conc.pr, OUT, resolve.root=TRUE) # Root1() does not fail if unable to root on > 1 outgroup
+
+> ## write tree to PDF
+> pdf(paste0("99_trees/", DATE, "_semistrict_mp_kubricks.pdf"), height=8, width=12)
+
+> oldpar <- par(mar=rep(0, 4))
+
+> conc.prr.b <- plotBS(conc.prr, conc.ptrees, p=50, type="phylogram")
+
+> add.scale.bar()
+
+> mtext("semistrict MP", font=2, line=-1)
+
+> par(oldpar)
+
+> dev.off()
+null device 
+          1 
+
+> ## keep tree as Newick file
+> conc.prr.b$node.label[conc.prr.b$node.label == "NA"] <- "" # useful for some Newick reading software
+
+> write.tree(conc.prr.b, file=paste0("99_trees/", DATE, "_semistrict_mp_kubricks.tre"))
+
+> ## also save all bootstrapped treea as R object for later use
+> dput(conc.ptrees, file=paste0("99_trees/", DATE, "_strict_mp_ptrees_kubricks.rd"))
+
+> ## calculate majority rule consensus
+> cons.50 <- consensus(conc.ptrees, p=0.5) # change if you need other consensus criteria
+
+> cons.50r <- Root1(cons.50, OUT)
+
+> ## write consensus tree to PDF
+> pdf(paste0("99_trees/", DATE, "_semistrict_mp_consensus_kubricks.pdf"), height=8, width=12) # change PDF size if needed
+
+> oldpar <- par(mar=rep(0, 4))
+
+> conc.prr.b <- plot(cons.50r)
+
+> add.scale.bar()
+
+> mtext("semistrict MP, majority rule consensus", font=2, line=-1)
+
+> par(oldpar)
+
+> dev.off()
+null device 
+          1 

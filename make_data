@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# this script prepares data for the tree building parts; run it when DNA data changes
+
+Rresults 13_make_wanted.r
+Rresults 20_make_sets.r
+Rresults 30_align.r
+Rresults 31_trim.r
+Rresults 32_gapcode.r
+Rresults 40_concatenate_and_stat.r

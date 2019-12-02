@@ -1,0 +1,5 @@
+#!/bin/bash
+
+# this script calls R model testing script
+
+Rresults 71_make_r_ml_modeltest.r

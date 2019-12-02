@@ -1,0 +1,33 @@
+## this script takes semistrict concatenated (super-matrix) data and build the k-mer tree
+
+library(ape)
+library(kmer)
+library(shipunov)
+
+DATE <- format(Sys.time(), "%Y%m%d_%H%M%S") # timestamp
+treesp <- read.table("_kubricks_treesp.txt", sep="\t", h=TRUE, as.is=TRUE) # read treesp to determine outgroups and outliers
+outgroups <- treesp$SPECIES.NEW[treesp$TYPE == "outgroup" & treesp$USE == 1]
+outgroups <- gsub(" ", "_", outgroups)
+
+conc <- read.dna("40_concatenated/semistrict.fasta", format="fasta")
+
+LAB <- sub("__.*$", "", labels(conc))
+OUT <- labels(conc)[LAB %in% outgroups]
+
+outliers <- treesp$SPECIES.NEW[treesp$TYPE == "outlier" & treesp$USE == 1]
+if (length(outliers) > 0) {
+ outliers <- gsub(" ", "_", outliers)
+ EXC <- labels(conc)[LAB %in% outliers]
+ conc <- conc[!labels(conc) %in% EXC, ] # remove outliers, if any
+}
+
+cat("semistrict k-mer...\n")
+conc.tree <- root(nj(kdistance(conc, k=8)), OUT, resolve.root=TRUE)
+conc.tree$edge.length[conc.tree$edge.length < 0] <- 0.00001 # found experimentally
+## save tree into PDF
+pdf(paste0("50_technical_trees/", DATE, "_semistrict_conc_nj_kubricks.pdf"), width=12, height=8) # change PDF size if needed
+oldpar <- par(mar=rep(0, 4))
+plot(conc.tree)
+mtext("k-mer: semistrict", font=2, line=-1)
+par(oldpar)
+dev.off()

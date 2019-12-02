@@ -1,0 +1,5 @@
+# "sp" is the main table which gives species names and synonyms, possibly also other taxonomic information
+# this table in turn might be generated from some more general taxonomic text
+GENUS	genus name (uninomial)
+SPECIES	species name (binomial)
+SYNONYMS	name of synonym (note that valied species names are repeated for synonyms)

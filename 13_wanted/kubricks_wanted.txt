@@ -1,0 +1,13 @@
+SPECIES	ABCD	EFGH	MOST.WANTED
+Kubrickus aus	2	0	4
+Kubrickus beus	2	0	4
+Kubrickus ceus	2	0	4
+Kubrickus geus	2	0	4
+Kubrickus ieus	2	0	4
+Kubrickus deus	2	2	2
+Kubrickus eus	2	2	2
+Kubrickus feus	2	2	2
+Kubrickus heus	2	2	2
+Kubrickus jeus	2	2	2
+Kubrickus keus	2	2	2
+Kubrickus leus	2	2	2

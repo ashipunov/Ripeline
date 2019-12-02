@@ -1,0 +1,44 @@
+# list of files and directories in the project
+# (all *_rresults.txt are the output of Rresults script and not listed below)
+000todo	TODO list
+03_checks.r	separate R script to check tables
+04_duplicated_ids_check.r	separate R script to check for duplicated IDs
+13_make_wanted.r	R script which outputs names of non-sequenced species and other info
+13_wanted/	directory to where "13_make_wanted.r" outputs results
+20_make_sets.r	R script which collect DNA data into the "sets" (one per marker) for subsequent alignment
+20_sets/	find sets here
+30_align.r	R script which calls the chosen external alignment tool
+30_alignments/	find alignments here
+31_trim.r	R script which trim flanks of alignments
+31_alignments_trimmed/	trimmed alignments here
+32_gapcode.r	R script which call Gap.code() function to encode gaps
+32_alignments_trimmed_gapcoded/	gapcoded alignments here
+40_concatenate_and_stat.r	R script which concatenate sequences from one sample ("strict") and from different samples of one species ("semistrict"), and also outputs some statistics
+40_concatenated/	directory where concatenated matrices ("super-matrices") and other "intermediate sources" are kept
+50_technical_trees/	directory with output "techical" trees (single marker trees, k-mer trees from raw data and from semistrict super-matrix)
+51_make_r_raw_kmer_trees.r	R script to build raw k-mer trees, with all data and with selected sequences only
+52_make_r_semistrict_kmer_tree.r	R script to build k-mer trees on semistrict super-matrix
+53_make_r_nj_single_marker_trees.r	R script to build NJ single marker trees
+61_make_r_mp_semistrict_tree.r	R script to build MP (maximum parsimony) trees
+70_raxml_working/	files from external RAxML tool
+71_make_r_ml_modeltest.r	R script for maximal likelihood model testing
+72_make_r_ml_trees.r	R script to estimate maximal likelihood trees
+73_make_raxml_trees.r	R script to estimate maximal likelihood trees with erxternal RAxML tool
+80_mrbayes_working/	files from external MrBayes tool
+81_make_mrbayes_semistrict_tree.r	R script to estimate Bayesian trees with external MrBayes tool
+99_trees/	resulted trees in PDF and also in Newick format
+_kubricks_dna.txt	local DNA database
+_kubricks_dna_c.txt	explanation if variables in "dna" table
+_kubricks_sp.txt	taxonomical data
+_kubricks_sp_c.txt	explanation of variables in "sp" table
+_kubricks_treesp.txt	analysis-specific species labels
+_kubricks_treesp_c.txt	explanation of variables in "treesp" table
+make_all	shell script to run the whole pipeline
+make_check	shell script to check if runs went without errors
+make_data	shell script to make alignments and concatenated matrix
+make_gzip	shell script to pack results of MrBayes run (otherwise, files are very big)
+make_model_test	shell script to run model testing
+make_technical_trees	shell script to build technical trees (see above)
+make_trees_semistrict	shell script to make resulted trees
+README	description of the package and installation instructions
+README_files	this file

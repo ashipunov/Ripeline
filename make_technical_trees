@@ -1,0 +1,7 @@
+#!/bin/bash
+
+# this shell script runs "techical trees" part of pipeline
+
+Rresults 51_make_r_raw_kmer_trees.r
+Rresults 52_make_r_semistrict_kmer_tree.r
+Rresults 53_make_r_nj_single_marker_trees.r

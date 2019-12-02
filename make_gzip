@@ -1,0 +1,9 @@
+#!/bin/bash
+
+# as we probably will need MrBayes output but it is so bulky, this script will gzip these files
+# note that R, for example, can use gzipped files on the fly
+
+for f in `ls 80_mrbayes_working/*.run[12].[tp]`
+do
+gzip -v -f $f
+done

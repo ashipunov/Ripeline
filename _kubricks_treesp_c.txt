@@ -1,0 +1,6 @@
+# "treesp" contains anaylsis-specific species labels
+# like  outgroup, oulier or other criteria used for selection / deselection
+SPECIES.NEW	see "samples" table
+TYPE	kind of label
+USE	use label? (additional flexibility)
+COMMENT	comment

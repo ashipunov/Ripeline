@@ -1,0 +1,23 @@
+
+> ## this script trims flanking regions from the alignments
+> 
+> library(shipunov)
+package 'shipunov', version 1.3-1
+
+> ## empty list with names per fragment
+> dna <- structure(vector("list", 2), names=c("abcd", "efgh"))
+
+> ## go to directoty with alignments
+> setwd("30_alignments")
+
+> for (f in names(dna)) {
++  dna[[f]] <- Read.fasta(paste0(f, ".fasta"))
++  bb <- do.call(rbind, strsplit(dna[[f]]$sequence, split="")) # split string sequences into nucleotide sequences
++  dd <- apply(bb, 2, function(.x) sum(.x == "-")/nrow(bb)) # count gaps
++  ee <- runmed(dd, 3) < 0.5 # trimming criterion: three subsequent sequence positions have more then 50% of non-gaps
++  left <- min(which(ee == TRUE)) # calculate left trimming position
++  right <- max(which(ee == TRUE)) # calculate right trimming position
++  ff <- bb[,left:right] # trim!
++  dna[[f]]$sequence <- apply(ff, 1, paste, collapse="") # join nucleotides into strings again
++  Write.fasta(dna[[f]], file=paste0("../31_alignments_trimmed/", f, ".fasta"))
++ }

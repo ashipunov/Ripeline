@@ -1,0 +1,1287 @@
+
+> ## this script takes semistrict data and estimates maximal likelihood (ML) tree
+> 
+> library(shipunov)
+package 'shipunov', version 1.3-1
+
+> library(phangorn) # no external tool needed
+Loading required package: ape
+
+> DATE <- format(Sys.time(), "%Y%m%d_%H%M%S") # timestamp
+
+> treesp <- read.table("_kubricks_treesp.txt", sep="\t", h=TRUE, as.is=TRUE) # to find out ougroups and outliers
+
+> outgroups <- treesp$SPECIES.NEW[treesp$TYPE == "outgroup" & treesp$USE == 1]
+
+> outgroups <- gsub(" ", "_", outgroups)
+
+> conc <- read.dna("40_concatenated/semistrict.fasta", format="fasta")
+
+> LAB <- sub("__.*$", "", labels(conc))
+
+> OUT <- labels(conc)[LAB %in% outgroups]
+
+> outliers <- treesp$SPECIES.NEW[treesp$TYPE == "outlier" & treesp$USE == 1]
+
+> if (length(outliers) > 0) {
++  outliers <- gsub(" ", "_", outliers)
++  EXC <- labels(conc)[LAB %in% outliers]
++  conc <- conc[!labels(conc) %in% EXC, ] # remove outliers, if any
++ }
+
+> conc <- as.phyDat(conc) # "phangorn" requires its own format
+
+> conc.nj  <- NJ(dist.ml(conc)) # starter tree
+
+> conc.fit <- pml(conc.nj, data=conc)
+negative edges length changed to 0!
+
+> conc.fit.opt <- optim.pml(conc.fit,
++  model="GTR", optGamma=TRUE, optInv=TRUE, rearrangement="stochastic") # change the model if needed
+only one rate class, ignored optGamma
+optimize edge weights:  -2289.795 --> -2266.671 
+optimize base frequencies:  -2266.671 --> -2243.548 
+optimize rate matrix:  -2243.548 --> -2218.706 
+optimize invariant sites:  -2218.706 --> -2203.119 
+optimize edge weights:  -2203.119 --> -2202.396 
+optimize topology:  -2202.396 --> -2196.934 
+optimize topology:  -2196.934 --> -2193.563 
+optimize topology:  -2193.563 --> -2190.8 
+4 
+optimize base frequencies:  -2190.8 --> -2190.476 
+optimize rate matrix:  -2190.476 --> -2190.052 
+optimize invariant sites:  -2190.052 --> -2189.848 
+optimize edge weights:  -2189.848 --> -2189.672 
+optimize topology:  -2189.672 --> -2189.049 
+optimize topology:  -2189.049 --> -2189.043 
+optimize topology:  -2189.043 --> -2188.996 
+3 
+optimize base frequencies:  -2188.996 --> -2188.972 
+optimize rate matrix:  -2188.972 --> -2188.942 
+optimize invariant sites:  -2188.942 --> -2188.942 
+optimize edge weights:  -2188.942 --> -2188.94 
+optimize topology:  -2188.94 --> -2188.939 
+optimize topology:  -2188.939 --> -2188.939 
+1 
+optimize base frequencies:  -2188.939 --> -2188.939 
+optimize rate matrix:  -2188.939 --> -2188.939 
+optimize invariant sites:  -2188.939 --> -2188.939 
+optimize edge weights:  -2188.939 --> -2188.938 
+optimize topology:  -2188.938 --> -2188.938 
+0 
+[1] "Ratchet iteration  1 , best pscore so far: -2188.93811894577"
+[1] "Ratchet iteration  2 , best pscore so far: -2188.93811894577"
+[1] "Ratchet iteration  3 , best pscore so far: -2188.38340174448"
+[1] "Ratchet iteration  4 , best pscore so far: -2188.38213964076"
+[1] "Ratchet iteration  5 , best pscore so far: -2188.38210445991"
+[1] "Ratchet iteration  6 , best pscore so far: -2188.38210445991"
+[1] "Ratchet iteration  7 , best pscore so far: -2188.38210445991"
+[1] "Ratchet iteration  8 , best pscore so far: -2188.38210445991"
+[1] "Ratchet iteration  9 , best pscore so far: -2188.38210445991"
+[1] "Ratchet iteration  10 , best pscore so far: -2188.38202881586"
+[1] "Ratchet iteration  11 , best pscore so far: -2188.38202881586"
+[1] "Ratchet iteration  12 , best pscore so far: -2188.38202881586"
+[1] "Ratchet iteration  13 , best pscore so far: -2188.38202881586"
+[1] "Ratchet iteration  14 , best pscore so far: -2188.38202880101"
+[1] "Ratchet iteration  15 , best pscore so far: -2188.38202880101"
+[1] "Ratchet iteration  16 , best pscore so far: -2188.38202880101"
+[1] "Ratchet iteration  17 , best pscore so far: -2188.38202880101"
+[1] "Ratchet iteration  18 , best pscore so far: -2188.38202880101"
+[1] "Ratchet iteration  19 , best pscore so far: -2188.38202880101"
+[1] "Ratchet iteration  20 , best pscore so far: -2188.38202880101"
+[1] "Ratchet iteration  21 , best pscore so far: -2188.38202880101"
+[1] "Ratchet iteration  22 , best pscore so far: -2188.38202880101"
+[1] "Ratchet iteration  23 , best pscore so far: -2188.38202880101"
+[1] "Ratchet iteration  24 , best pscore so far: -2188.38202880101"
+[1] "Ratchet iteration  25 , best pscore so far: -2188.38202880101"
+[1] "Ratchet iteration  26 , best pscore so far: -2188.38202880101"
+[1] "Ratchet iteration  27 , best pscore so far: -2188.38202880101"
+[1] "Ratchet iteration  28 , best pscore so far: -2188.38202880101"
+[1] "Ratchet iteration  29 , best pscore so far: -2188.38202880101"
+[1] "Ratchet iteration  30 , best pscore so far: -2188.38202880101"
+[1] "Ratchet iteration  31 , best pscore so far: -2188.38202880101"
+[1] "Ratchet iteration  32 , best pscore so far: -2188.38202880101"
+[1] "Ratchet iteration  33 , best pscore so far: -2188.38202880101"
+[1] "Ratchet iteration  34 , best pscore so far: -2188.38202880101"
+optimize base frequencies:  -2188.382 --> -2188.38 
+optimize rate matrix:  -2188.38 --> -2188.375 
+optimize invariant sites:  -2188.375 --> -2188.364 
+optimize edge weights:  -2188.364 --> -2188.363 
+optimize topology:  -2188.363 --> -2188.363 
+0 
+optimize base frequencies:  -2188.363 --> -2188.363 
+optimize rate matrix:  -2188.363 --> -2188.363 
+optimize invariant sites:  -2188.363 --> -2188.363 
+optimize edge weights:  -2188.363 --> -2188.363 
+optimize base frequencies:  -2188.363 --> -2188.363 
+optimize rate matrix:  -2188.363 --> -2188.363 
+optimize invariant sites:  -2188.363 --> -2188.363 
+optimize edge weights:  -2188.363 --> -2188.363 
+
+> conc.fit.bs <- bootstrap.pml(conc.fit.opt, bs=100, # change number of boostrap replicates when needed
++  optNni=TRUE, multicore=TRUE) # change "multicore" option if it does not work
+Final p-score 138 after  0 nni operations 
+Final p-score 114 after  1 nni operations 
+optimize edge weights:  -2165.47 --> -2163.459 
+optimize edge weights:  -2163.459 --> -2163.459 
+Final p-score 124 after  0 nni operations 
+optimize edge weights:  -2280.851 --> -2278.2 
+optimize edge weights:  -2278.2 --> -2278.2 
+Final p-score 112 after  1 nni operations 
+optimize topology:  -2163.459 --> -2163.459 
+optimize topology:  -2278.2 --> -2276.984 
+optimize topology:  -2163.459 --> -2163.459 
+1 
+optimize edge weights:  -2163.459 --> -2163.459 
+optimize edge weights:  -2224.861 --> -2223.067 
+optimize edge weights:  -2223.067 --> -2223.067 
+optimize topology:  -2276.984 --> -2276.984 
+optimize edge weights:  -2145.771 --> -2144.687 
+optimize edge weights:  -2144.687 --> -2144.687 
+optimize topology:  -2163.459 --> -2163.459 
+0 
+optimize edge weights:  -2163.459 --> -2163.459 
+optimize topology:  -2276.984 --> -2276.984 
+2 
+optimize edge weights:  -2276.984 --> -2276.984 
+optimize topology:  -2144.687 --> -2144.687 
+optimize topology:  -2223.067 --> -2220.712 
+Final p-score 132 after  0 nni operations 
+optimize topology:  -2276.984 --> -2276.984 
+0 
+optimize edge weights:  -2276.984 --> -2276.984 
+optimize topology:  -2144.687 --> -2144.687 
+optimize topology:  -2220.712 --> -2220.712 
+optimize topology:  -2144.687 --> -2144.687 
+2 
+optimize edge weights:  -2272.877 --> -2269.242 
+optimize edge weights:  -2144.687 --> optimize edge weights: -2144.687 
+ -2269.242 --> -2269.242 
+Final p-score 106 after  0 nni operations 
+optimize topology:  -2220.712optimize topology:   -2144.687 --> -2144.687 
+0 
+--> -2220.712 
+2 
+optimize edge weights:  -2144.687 --> -2144.687 
+optimize edge weights: optimize topology:   -2269.242 --> -2269.241 
+-2220.712 --> -2220.712 
+optimize edge weights:  -2128.541 --> -2124.426 
+optimize edge weights:  -2124.426 --> -2123.93 
+Final p-score 118 after  1 nni operations 
+optimize topology:  -2269.241 --> -2268.933 
+optimize topology:  -2220.712 --> -2220.712 
+0 
+optimize edge weights:  -2220.712 --> -2220.712 
+optimize topology:  -2123.93 --> -2122.534 
+optimize topology:  -2268.933 --> -2268.933 
+2 
+optimize edge weights:  -2268.933 --> -2268.933 
+optimize topology:  -2122.534 --> -2122.534 
+1 
+optimize edge weights:  -2198.789 --> optimize edge weights:  -2195.533 
+-2122.534 --> -2122.534 
+optimize edge weights:  -2195.533 --> -2195.522 
+Final p-score 113 after  1 nni operations 
+optimize topology: optimize topology:  -2268.933 --> -2268.933 
+0 
+ -2122.534 --> -2122.534 
+0 
+optimize edge weights:  optimize edge weights: -2268.933 --> -2268.933 
+ -2122.534 --> -2122.534 
+optimize topology:  -2195.522 --> -2195.522 
+0 
+optimize edge weights:  -2195.522 --> -2195.522 
+optimize edge weights:  -2195.522 --> -2195.522 
+optimize edge weights:  -2176.957 --> -2175.598 
+Final p-score 134 after  0 nni operations 
+optimize edge weights:  -2175.598 -->Final p-score  115-2175.598 
+ after  0 nni operations 
+Final p-score 138 after  0 nni operations 
+optimize topology:  -2175.598 --> -2175.598 
+0 
+optimize edge weights:  -2175.598 --> -2175.598 
+optimize edge weights:  -2175.598 --> -2175.598 
+optimize edge weights:  -2259.598 --> -2257.783 
+optimize edge weights:  -2257.783 --> -2257.783 
+optimize edge weights:  -2183.841 --> -2182.734 
+optimize edge weights:  -2182.734 --> -2182.734 
+optimize edge weights:  -2276.503 --> -2274.132 
+optimize edge weights:  -2274.132 --> -2274.132 
+optimize topology:  -2257.783 --> -2257.783 
+optimize topology:  -2182.734 --> -2182.734 
+optimize topology:  -2274.132 --> -2274.132 
+Final p-score 111 after  0 nni operations 
+optimize topology:  -2257.783 --> -2257.783 
+1 
+optimize edge weights:  -2257.783 --> -2257.783 
+optimize topology:  -2182.734 --> -2182.734 
+1 
+optimize topology:  -2274.132 --> -2274.132 
+1 
+optimize edge weights:  -2182.734 --> -2182.734 
+optimize edge weights:  -2274.132 --> -2274.132 
+optimize topology:  -2257.783 --> -2257.783 
+0 
+optimize edge weights:  -2257.783 --> -2257.783 
+optimize edge weights:  -2169.09 --> -2168.526 
+optimize topology:  -2182.734optimize topology:   --> -2182.734-2274.132  --> -2274.132 
+
+0 
+0 
+optimize edge weights:  -2182.734 --> -2182.734 
+optimize edge weights:  -2274.132 --> -2274.132 
+optimize edge weights:  -2168.526 --> -2168.518 
+Final p-score 114 after  0 nni operations 
+Final p-score 141 after  0 nni operations 
+Final p-score 114 after  0 nni operations 
+optimize topology:  -2168.518 --> -2168.516 
+optimize edge weights:  -2164.276 --> -2163.066 
+optimize edge weights: optimize edge weights:  -2149.642 --> -2145.905 
+ -2313.43 --> -2311.802 
+optimize edge weights:  -2163.066 --> -2163.066 
+optimize edge weights:  -2311.802 --> -2311.802 
+optimize edge weights:  -2145.905 --> -2145.905 
+optimize topology:  -2168.516 --> -2168.458 
+optimize topology:  -2311.802 --> -2311.802 
+optimize topology:  -2163.066 --> -2163.066 
+optimize topology:  -2145.905 --> -2145.767 
+optimize topology:  -2311.802 --> -2311.802 
+optimize topology:  -2168.458 --> -2168.457 
+3 
+optimize topology:  -2163.066 --> -2163.066 
+optimize topology:  -2145.767 --> -2144.675 
+optimize edge weights:  -2168.457 --> -2168.455 
+optimize topology:  -2144.675 --> -2144.675 
+3 
+optimize topology:  -2163.066 --> -2163.066 
+2 
+optimize edge weights:  -2163.066 --> -2163.066 
+optimize edge weights:  -2144.675 --> -2144.674 
+optimize topology:  -2168.455 --> -2168.455 
+optimize topology:  -2311.802 --> -2311.802 
+2 
+optimize edge weights:  -2311.802 --> -2311.802 
+optimize topology:  -2144.674 --> -2144.674 
+0 
+optimize topology:  -2168.455 --> -2168.455 
+1 
+optimize edge weights:  -2144.674 --> -2144.674 
+optimize edge weights:  -2168.455 --> -2168.454 
+optimize topology:  -2311.802 --> -2311.802 
+0 
+optimize edge weights:  -2144.674 --> -2144.674 
+optimize edge weights:  -2311.802 --> -2311.802 
+optimize topology:  -2163.066 --> -2163.066 
+0 
+optimize edge weights:  -2163.066 --> -2163.066 
+optimize topology:  -2168.454 --> -2168.454 
+0 
+optimize edge weights:  -2168.454 --> -2168.454 
+optimize edge weights:  -2144.674 --> -2144.673 
+Final p-score 113 after  0 nni operations 
+optimize edge weights:  -2144.673 --> -2144.673 
+Final p-score 118 after  0 nni operations 
+Final p-score 98 after  0 nni operations 
+optimize edge weights:  -2148.917 --> -2146.134 
+Final p-score 108 after  0 nni operations 
+optimize edge weights:  -2146.134 --> -2146.134 
+optimize edge weights:  -2209.303 --> -2207.383 
+optimize edge weights:  -2207.383 --> -2207.383 
+optimize edge weights:  -2112.194 --> -2110.111 
+optimize edge weights:  -2110.111 --> -2110.111 
+optimize topology:  -2207.383 --> -2207.383 
+optimize topology:  -2146.134 --> -2145.318 
+optimize edge weights:  -2122.595 --> -2120.603 
+optimize edge weights:  -2120.603 --> -2120.603 
+optimize topology:  -2207.383 --> -2207.383 
+1 
+optimize edge weights:  -2207.383 --> -2207.383 
+optimize topology:  -2145.318 --> -2145.318 
+1 
+optimize edge weights:  -2145.318 --> -2145.318 
+optimize topology:  -2120.603 --> -2120.603 
+0optimize topology:  -2110.111 --> -2110.111 
+ 
+optimize edge weights:  -2120.603 --> -2120.603 
+optimize edge weights:  -2120.603 --> -2120.603 
+optimize topology:  -2207.383 --> -2207.383 
+0 
+optimize topology:  -2145.318 --> -2145.318 
+0 
+optimize edge weights:  -2207.383 --> -2207.383 
+optimize edge weights:  -2145.318 --> -2145.318 
+optimize topology:  -2110.111 --> -2110.111 
+1 
+optimize edge weights:  -2110.111 --> -2110.111 
+Final p-score 114 after  0 nni operations 
+optimize topology:  -2110.111 --> -2110.111 
+0 
+Final p-score 116 after  0 nni operations 
+optimize edge weights:  -2110.111 --> -2110.111 
+Final p-score 123 after  0 nni operations 
+optimize edge weights:  -2141.99 --> -2138.52 
+optimize edge weights:  -2138.52 --> -2138.52 
+optimize edge weights:  -2198.54 --> -2194.612 
+optimize edge weights:  -2194.612 --> -2194.095 
+optimize edge weights:  -2225.894 --> -2223.532 
+optimize edge weights:  -2223.532 --> -2223.532 
+Final p-score 123 after  0 nni operations 
+optimize topology:  -2138.52 --> -2138.52 
+optimize topology:  -2223.532 --> -2222.871 
+optimize topology:  -2194.095 --> -2193.892 
+optimize topology:  -2138.52 --> -2138.52 
+1 
+optimize edge weights:  -2204.111 --> -2197.368 
+optimize edge weights:  -2138.52 --> -2138.52 
+optimize edge weights:  -2197.368 --> -2197.368 
+optimize topology:  -2222.871 --> -2222.871 
+1 
+optimize edge weights:  -2222.871 --> -2222.871 
+optimize topology:  -2138.52 --> -2138.52 
+0 
+optimize topology:  -2222.871 --> -2222.871 
+0 
+optimize edge weights:  -2222.871 --> -2222.871 
+optimize edge weights:  -2138.52 --> -2138.52 
+optimize topology:  -2193.892 --> -2193.506 
+optimize topology:  -2197.368 --> -2195.521 
+Final p-score 119 after  0 nni operations 
+Final p-score 91 after  0 nni operations 
+optimize topology:  -2193.506 --> -2189.468 
+3 
+optimize topology:  -2195.521 --> -2195.313 
+optimize edge weights:  -2189.468 --> -2189.4 
+optimize edge weights:  -2206.399 --> -2200.156 
+optimize edge weights:  -2033.027 --> -2030.085 
+optimize edge weights:  -2030.085 --> -2030.085 
+optimize edge weights:  -2200.156 --> -2199.956 
+optimize topology:  -2195.313 --> -2195.184 
+3 
+optimize topology:  -2189.4 --> -2189.39 
+optimize edge weights:  -2195.184 --> -2195.089 
+optimize topology:  -2030.085 --> -2030.082 
+optimize topology:  -2199.956 --> -2199.91 
+0 
+optimize edge weights:  -2199.91 --> -2199.88 
+optimize edge weights:  -2199.88 --> -2199.871 
+optimize topology:  -2030.082 --> -2030.018 
+optimize topology:  -2195.089 --> -2195.075 
+0 
+optimize topology:  -2189.39 --> optimize edge weights: -2189.385 
+ -2199.871 --> -2199.868 
+1 
+optimize edge weights:  -2195.075 --> -2195.071 
+optimize edge weights:  -2199.868 --> -2199.863 
+optimize edge weights:  -2189.385 --> -2189.382 
+optimize edge weights:  -2195.071 --> -2195.07 
+optimize edge weights:  -2199.863 --> -2199.078 
+optimize edge weights:  -2195.07 --> -2195.07 
+optimize topology:  -2030.018 --> -2023.41 
+3 
+optimize edge weights:  -2195.07 --> -2195.069 
+optimize edge weights:  -2023.41 --> -2023.409 
+optimize topology:  -2189.382 --> -2189.381 
+0 
+Final p-score 100 after  0 nni operations 
+optimize edge weights:  -2189.381 --> Final p-score-2189.38 
+ 125 after  0 nni operations 
+optimize topology:  -2023.409 --> -2019.365 
+optimize edge weights:  -2189.38 --> -2189.38 
+optimize edge weights:  -2189.38 --> -2189.38 
+optimize edge weights:  -2090.036 --> -2085.827 
+optimize edge weights:  -2085.827 --> -2085.827 
+optimize topology:  -2019.365 --> -2019.365 
+1 
+optimize edge weights:  -2243.291 --> -2237.016 
+optimize edge weights:  -2019.365 --> -2019.364 
+optimize edge weights:  -2237.016 --> -2235.711 
+Final p-score 124 after  0 nni operations 
+optimize topology:  -2085.827 --> -2084.051 
+optimize topology:  -2019.364 --> -2019.364 
+0 
+optimize edge weights:  -2019.364 --> -2019.363 
+optimize topology:  -2084.051 --> -2084.051 
+1 
+optimize edge weights:  -2019.363 --> -2019.362 
+optimize edge weights:  -2084.051 --> -2084.051 
+optimize topology:  -2235.711 --> -2232.792 
+optimize edge weights:  -2019.362 --> -2019.362 
+optimize edge weights:  -2186.649 --> -2183.202 
+optimize edge weights:  -2183.202 --> -2183.202 
+optimize edge weights:  -2019.362 --> -2019.361 
+optimize topology:  -2084.051 --> -2084.051 
+0 
+optimize edge weights:  -2084.051 --> -2084.051 
+optimize topology:  -2232.792 --> -2232.765 
+optimize topology:  -2183.202 --> -2183.202 
+Final p-score 138 after  0 nni operations 
+Final p-score 112 after  0 nni operations 
+optimize topology:  -2183.202 --> -2183.202 
+1 
+optimize edge weights:  -2183.202 --> -2183.202 
+optimize topology:  -2232.765 --> -2232.752 
+3 
+optimize edge weights:  -2232.752 --> -2232.74 
+optimize edge weights:  -2285.751 --> -2281.546 
+optimize topology:  -2183.202 --> -2183.202 
+0 
+optimize edge weights:  -2281.546 --> -2281.546 
+optimize edge weights:  -2183.202 --> -2183.202 
+optimize edge weights:  -2168.501 --> -2165.171 
+optimize edge weights:  -2165.171 --> -2165.171 
+optimize topology:  -2232.74 --> -2232.736 
+optimize topology:  -2281.546 --> -2281.514 
+Final p-score 124 after  0 nni operations 
+optimize topology:  -2165.171 --> -2165.171 
+optimize topology:  -2232.736 --> -2232.732 
+optimize topology:  -2281.514 --> -2281.511 
+optimize topology:  -2165.171 --> -2165.171 
+1 
+optimize edge weights:  -2165.171 --> -2165.171 
+optimize edge weights:  -2212.487 --> -2208.503 
+optimize edge weights:  -2208.503 --> -2208.503 
+optimize topology:  -2232.732 --> -2232.729 
+3 
+optimize edge weights:  -2232.729 --> -2232.724 
+optimize topology:  -2281.511 --> -2281.509 
+3 
+optimize topology:  -2165.171 --> -2165.171 
+0 
+optimize edge weights:  -2165.171 --> -2165.171 
+optimize edge weights:  -2281.509 --> -2281.505 
+optimize topology:  -2208.503 --> -2208.503 
+0 
+optimize edge weights:  -2208.503 --> -2208.503 
+optimize edge weights:  -2208.503 --> -2208.503 
+optimize topology:  -2232.724 --> -2232.722 
+optimize topology:  -2281.505 --> -2281.503 
+0 
+Final p-score 124 after  0 nni operations 
+optimize edge weights:  -2281.503 --> -2281.499 
+Final p-score 108 after  0 nni operations 
+optimize edge weights:  -2281.499 --> -2281.495 
+optimize topology:  -2232.722 --> -2232.72 
+optimize edge weights:  -2281.495 --> -2281.49 
+optimize edge weights:  -2281.49 --> -2281.486 
+optimize edge weights:  -2209.36 --> -2202.502 
+optimize edge weights:  -2202.502 --> -2202.502 
+optimize edge weights:  -2114.773 --> -2110.487 
+optimize topology:  -2232.72 --> -2232.719 
+3 
+optimize edge weights:  -2110.487 --> -2110.402 
+optimize edge weights:  -2232.719 --> -2232.717 
+Final p-score 123 after  0 nni operations 
+optimize topology:  -2202.502 --> -2202.502 
+optimize topology:  -2110.402 --> -2110.363 
+optimize topology:  -2232.717 --> -2232.716 
+optimize topology:  -2202.502 --> -2202.502 
+1 
+optimize edge weights:  -2202.502 --> -2202.502 
+optimize edge weights:  -2213.723 --> -2209.951 
+optimize edge weights:  -2209.951 --> -2209.951 
+optimize topology:  -2110.363 --> -2110.363 
+optimize topology:  -2202.502 --> -2202.502 
+0 
+optimize topology:  -2232.716 --> -2232.716 
+optimize edge weights:  -2202.502 --> -2202.502 
+optimize topology:  -2209.951 --> -2209.949 
+optimize topology:  -2110.363 --> -2110.363 
+3 
+optimize edge weights:  -2110.363 --> -2110.363 
+optimize topology:  -2232.716 --> -2232.715 
+3 
+optimize topology:  -2110.363 --> -2110.363 
+0 
+Final p-score 147 after  2 nni operations 
+optimize edge weights:  -2110.363 --> -2110.363 
+optimize topology:  -2209.949 --> -2209.947 
+optimize edge weights:  -2232.715 --> -2232.715 
+optimize topology:  -2232.715 --> -2232.714 
+optimize topology:  -2209.947 --> -2209.944 
+2 
+Final p-score 105 after  1 nni operations 
+optimize edge weights:  -2339.338 --> -2335.524 
+optimize edge weights:  -2209.944 --> -2209.94 
+optimize edge weights:  -2335.524 --> -2335.524 
+optimize topology:  -2232.714 --> -2232.714 
+optimize topology: optimize topology:  -2335.524 --> -2335.524 -2209.94 --> -2209.937 
+ 
+0 
+optimize edge weights:  -2119.635 --> -2116.601 
+optimize edge weights:  -2209.937 --> -2209.933 
+optimize edge weights:  -2116.601 --> -2116.592 
+optimize edge weights:  -2209.933 --> -2209.928 
+optimize topology:  -2232.714 --> -2232.714 
+3 
+optimize topology:  -2335.524 --> -2335.524 
+optimize edge weights:  -2209.928 --> -2209.923 
+optimize edge weights:  -2232.714 --> -2232.714 
+optimize edge weights:  -2209.923 --> -2209.917 
+optimize topology:  -2116.592 --> -2116.592 
+0 
+optimize edge weights:  -2116.592 --> -2116.592 
+optimize edge weights:  -2116.592 --> -2116.592 
+optimize topology:  -2335.524 --> -2335.524 
+3 
+optimize edge weights:  -2335.524 --> -2335.524 
+optimize topology:  -2232.714 --> -2232.714 
+Final p-score 125 after  0 nni operations 
+Final p-score 121 after  0 nni operations 
+optimize topology:  -2335.524 --> -2335.524 
+0 
+optimize edge weights:  -2335.524 --> -2335.524 
+optimize topology:  -2232.714 --> -2232.714 
+optimize edge weights:  -2216.732 --> -2207.911 
+optimize edge weights:  -2205.708 optimize edge weights:  -2207.911 --> -2207.895 
+--> -2203.186 
+optimize edge weights:  -2203.186 --> -2203.186 
+Final p-score 117 after  0 nni operations 
+optimize topology:  -2232.714 --> -2232.714 
+3 
+optimize edge weights:  -2232.714 --> -2232.714 
+optimize topology:  -2203.186 --> -2203.186 
+optimize topology:  -2207.895 --> -2206.331 
+optimize edge weights:  -2165.819 --> -2162.831 
+optimize topology:  -2203.186 --> -2203.186 
+1 
+optimize edge weights:  -2162.831 --> -2162.831 
+optimize edge weights:  -2203.186 --> -2203.186 
+optimize topology:  -2232.714 --> -2232.714 
+optimize topology:  -2206.331 --> -2206.331 
+optimize topology:  -2203.186 --> -2203.186 
+0 
+optimize edge weights:  -2203.186 optimize topology: -->  -2162.831-2203.186 
+ --> -2162.668 
+optimize topology:  -2232.714 --> -2232.714 
+optimize topology:  -2206.331 --> -2206.331 
+2 
+optimize edge weights:  -2206.331 --> -2206.331 
+Final p-score 131 after  1 nni operations 
+optimize topology:  -2162.668 --> -2157.58 
+optimize topology:  -2232.714 --> -2232.714 
+3 
+optimize edge weights:  -2232.714 --> -2232.714 
+optimize topology:  -2157.58 --> -2157.58 
+3 
+optimize topology:  -2206.331 --> -2206.331 
+0 
+optimize edge weights:  -2157.58 --> -2157.58 
+optimize edge weights:  -2206.331 --> -2206.331 
+optimize edge weights:  -2251.469 --> -2248.099 
+optimize edge weights:  -2248.099 --> -2248.099 
+optimize topology:  -2232.714 --> -2232.714 
+optimize topology:  -2157.58 --> -2157.547 
+Final p-score 122 after  0 nni operations 
+optimize topology:  -2248.099 --> -2248.099 
+optimize topology:  -2157.547 --> -2157.547 
+1 
+optimize topology:  -2232.714 --> -2232.714 
+optimize edge weights:  -2157.547 --> -2157.547 
+optimize edge weights:  -2243.6 --> -2240.129 
+optimize topology:  -2157.547 --> -2157.547 
+0 
+optimize topology:  -2248.099 --> -2248.099 
+1 
+optimize edge weights:  -2157.547 --> -2157.547 
+optimize edge weights:  -2240.129 --> -2240.12 
+optimize edge weights:  -2248.099 --> -2248.099 
+optimize topology:  -2232.714 --> -2232.714 
+3 
+optimize edge weights:  -2232.714 --> -2232.714 
+optimize topology:  -2248.099 --> -2248.099 
+0 
+Final p-score 112 after  1 nni operations 
+optimize topology:  -2240.12 --> -2240.12 
+optimize topology:  -2232.714 --> -2232.714 
+optimize edge weights:  -2248.099 --> -2248.099 
+optimize topology:  -2232.714 --> -2232.714 
+optimize edge weights:  -2142.46 --> -2139.746 
+optimize topology:  -2240.12 --> -2240.12 
+1 
+optimize edge weights:  -2139.746 --> -2139.746 
+optimize edge weights:  -2240.12 --> -2240.12 
+Final p-score 119 after  0 nni operations 
+optimize topology:  -2139.746 --> -2139.746 
+optimize topology:  -2232.714 --> -2232.714 
+3 
+optimize edge weights:  -2232.714 --> -2232.714 
+optimize topology:  -2240.12 --> -2240.12 
+0 
+optimize edge weights:  -2240.12 --> -2240.12 
+optimize edge weights:  -2208.29 --> -2204.737 
+optimize edge weights:  -2204.737 --> -2204.737 
+optimize topology:  -2139.746 --> -2139.746 
+optimize topology:  -2232.714 --> -2232.714 
+Final p-score 123 after  0 nni operations 
+optimize topology:  -2204.737 --> -2204.737 
+optimize topology:  -2139.746 --> -2139.746 
+2 
+optimize edge weights:  -2139.746 --> -2139.746 
+optimize topology:  -2232.714 --> -2232.714 
+1 
+optimize edge weights:  -2232.714 --> -2232.714 
+optimize edge weights:  -2218.278 --> -2215.658 
+optimize topology:  -2204.737 --> -2204.737 
+1 
+optimize edge weights:  -2215.658 --> -2215.658 
+optimize topology:  -2139.746 --> -2139.746 
+0 
+optimize edge weights:  -2204.737 --> -2204.737 
+optimize edge weights:  -2139.746 --> -2139.746 
+optimize topology:  -2232.714 --> -2232.714 
+0 
+optimize edge weights:  -2232.714 --> -2232.714 
+optimize topology:  -2204.737 --> -2204.737 
+0 
+optimize edge weights:  -2204.737 --> optimize topology:  -2215.658 --> -2215.658 
+-2204.737 
+Final p-score 121 after  1 nni operations 
+optimize topology:  -2215.658 --> -2215.658 
+1 
+Final p-score 108 after  0 nni operations 
+optimize edge weights:  -2215.658 --> -2215.658 
+optimize edge weights:  -2213.162 --> -2209.764 
+Final p-score 99 after  0 nni operations 
+optimize edge weights:  -2209.764 --> -2209.764 
+optimize topology:  -2215.658 --> -2215.658 
+0 
+optimize edge weights:  -2215.658 --> -2215.658 
+optimize edge weights:  -2148.227 --> -2141.154 
+optimize topology:  -2209.764 --> -2209.764 
+optimize edge weights:  -2141.154 --> -2139.328 
+optimize edge weights:  -2101.556 --> -2100.334 
+optimize edge weights:  -2100.334 --> -2100.334 
+Final p-score 114 after  0 nni operations 
+optimize topology:  -2209.764 --> -2209.764 
+1 
+optimize topology:  -2139.328 --> -2136.946 
+optimize edge weights:  -2209.764 --> -2209.764 
+optimize topology:  -2100.334 --> -2099.926 
+optimize topology:  -2099.926 -->optimize topology:  -2136.946 --> -2136.883 
+ -2099.926 
+1 
+optimize edge weights:  -2099.926 --> -2099.926 
+optimize topology:  -2209.764 --> -2209.764 
+0 
+optimize edge weights:  -2170.762 --> -2168.181 
+optimize edge weights:  -2168.181 --> -2168.181 
+optimize edge weights:  -2209.764 --> -2209.764 
+optimize topology:  -2136.883 --> -2136.883 
+3 
+optimize topology:  -2099.926 --> -2099.926 
+0 
+optimize edge weights:  -2099.926 --> -2099.926 
+optimize edge weights: optimize topology:   -2168.181-2136.883  -->-->  -2168.181-2136.883  
+
+Final p-score 108 after  0 nni operations 
+optimize topology:  -2168.181 --> -2168.181 
+optimize topology:  -2136.883 --> -2136.786 
+Final p-score 113 after  0 nni operations 
+optimize topology:  -2168.181 --> -2168.181 
+2 
+optimize edge weights:  -2168.181 --> -2168.181 
+optimize topology:  -2136.786 --> -2136.786 
+optimize edge weights:  -2144.715 --> -2141.375 
+optimize edge weights:  -2141.375 --> -2141.375 
+optimize edge weights:  -2150.304 --> -2146.659 
+optimize edge weights:  -2146.659 --> optimize topology:  -2136.786 --> -2136.786 
+2 
+-2146.586 
+optimize topology:  -2141.375 --> -2141.375 
+optimize topology:  -2168.181 --> -2168.181 
+0 
+optimize edge weights:  -2136.786 --> -2136.786 
+optimize edge weights:  -2168.181 --> -2168.181 
+optimize topology:  -2141.375 --> -2141.375 
+1 
+optimize edge weights:  optimize topology:  -2136.786 --> -2136.786 
+0 
+-2141.375 --> -2141.375 
+optimize edge weights:  -2136.786 --> -2136.786 
+optimize topology:  -2146.586 --> -2146.569 
+Final p-score 115 after  0 nni operations 
+optimize topology:  -2141.375 --> -2141.375 
+0 
+optimize edge weights:  -2141.375 --> -2141.375 
+optimize topology:  -2146.569 --> -2146.558 
+1 
+Final p-score 122 after  0 nni operations 
+optimize edge weights:  -2149.428 --> -2146.021 
+optimize edge weights:  -2146.021 --> -2146.02 
+optimize edge weights:  -2146.558 --> -2146.548 
+Final p-score 129 after  0 nni operations 
+optimize topology:  -2146.02 --> -2145.994 
+optimize edge weights:  -2208.332 --> -2200.198 
+optimize topology:  -2146.548 --> -2146.544 
+0 
+optimize edge weights:  -2200.198 --> -2199.052 
+optimize edge weights:  -2146.544 --> -2146.54 
+optimize edge weights:  -2146.54 --> -2146.538 
+optimize topology:  -2145.994 --> -2145.581 
+optimize edge weights:  -2146.538 --> -2146.537 
+optimize edge weights:  -2146.537 --> -2146.537 
+optimize topology:  -2199.052 --> -2198.352 
+optimize topology:  -2145.581 --> -2145.581 
+3 
+optimize edge weights:  -2145.581 --> -2145.581 
+optimize topology:  -2198.352 --> -2198.345 
+optimize topology:  -2145.581 --> -2145.581 
+0 
+optimize edge weights:  -2145.581 --> -2145.581 
+optimize topology:  -2198.345 --> -2197.293 
+3 
+optimize edge weights:  -2197.293 --> -2197.293 
+optimize edge weights:  -2232.198 --> -2228.083 
+optimize edge weights:  -2228.083 --> -2228.083 
+optimize topology:  -2197.293 --> -2197.264 
+Final p-scoreoptimize topology:  114 after  -2228.083 --> -2228.083 
+ 0 nni operations 
+optimize topology:  -2197.264 --> -2196.435 
+optimize topology:  -2228.083 --> -2228.083 
+1 
+optimize edge weights:  -2228.083 --> -2228.083 
+optimize edge weights:  -2139.437 --> -2132.867 
+optimize topology:  -2196.435 --> -2196.435 
+3 
+optimize edge weights:  -2196.435 --> -2196.435 
+optimize edge weights:  -2132.867 --> -2131.481 
+Final p-score 106 after  0 nni operations 
+optimize topology:  -2228.083 --> -2228.083 
+0 
+optimize edge weights:  -2228.083 --> -2228.083 
+optimize topology:  -2131.481 --> -2131.481 
+optimize topology:  -2196.435 --> -2196.42 
+optimize edge weights:  -2138.819 --> -2136.269 
+optimize topology:  -2131.481 --> -2131.405 
+optimize edge weights:  -2136.269 --> -2136.269 
+Final p-score 107 after  0 nni operations 
+optimize topology:  -2196.42 --> -2196.42 
+optimize topology:  -2131.405 --> -2131.405 
+2 
+optimize edge weights:  -2131.405 --> -2131.405 
+optimize topology:  -2136.269 --> -2136.269 
+optimize edge weights:  -2124.785 --> -2123.675 
+optimize edge weights:  -2123.675 --> -2123.675 
+optimize topology:  -2131.405 --> -2131.405 
+0 
+optimize edge weights:  -2131.405 --> -2131.405 
+optimize topology:  -2123.675 --> -2123.675 
+optimize topology:  -2136.269 --> -2136.269 
+1 
+optimize edge weights:  -2136.269 --> -2136.269 
+optimize topology:  -2123.675 --> -2123.675 
+1 
+optimize edge weights:  -2123.675 --> -2123.675 
+Final p-score 125 after  0 nni operations 
+optimize topology:  -2136.269 --> -2136.269 
+0 
+optimize edge weights:  -2136.269 --> -2136.269 
+optimize topology:  -2123.675 --> -2123.675 
+0 
+optimize edge weights:  -2123.675 --> -2123.675 
+optimize edge weights:  -2219.822 --> -2217.446 
+optimize edge weights:  -2217.446 --> -2217.446 
+optimize topology:  -2196.42 --> -2196.42 
+2 
+optimize edge weights:  -2196.42 --> -2196.42 
+Final p-score 116 after  0 nni operations 
+Final p-score 102 after  0 nni operations 
+optimize topology:  -2217.446 --> -2211.301 
+optimize topology:  -2196.42 --> -2196.42 
+0 
+optimize edge weights:  -2196.42 --> -2196.42 
+optimize edge weights:  -2157.469 --> -2155.847 
+optimize edge weights:  -2155.847 --> -2155.847 
+optimize edge weights:  -2130.078 --> -2127.124 
+optimize edge weights:  -2127.124 --> -2127.124 
+optimize topology:  -2211.301 --> -2211.301 
+optimize topology:  -2155.847 --> -2155.8 
+Final p-score 128 after  0 nni operations 
+optimize topology:  -2211.301 --> -2211.301 
+3 
+optimize edge weights:  -2211.301 --> -2211.301 
+optimize topology:  -2127.124 --> -2127.037 
+optimize topology:  -2155.8 --> -2155.782 
+1 
+optimize edge weights:  -2155.782 --> -2155.778 
+optimize topology:  -2211.301 --> -2211.301 
+0 
+optimize edge weights:  -2211.301 --> -2211.301 
+optimize topology:  -2155.778 --> -2155.778 
+0 
+optimize edge weights:  -2155.778 --> -2155.778 
+optimize topology:  -2127.037 --> -2127.036 
+optimize edge weights:  -2249.464 --> -2247.28 
+optimize edge weights:  -2247.28 --> -2247.28 
+Final p-score 140 after optimize topology:  -2127.036 --> -2127.036 
+ 3 
+0 nni operations 
+Final p-score 113 after  0 nni operations 
+optimize topology:  -2247.28 --> -2244.242 
+optimize edge weights:  -2127.036 --> -2127.036 
+optimize topology:  -2244.242 --> -2244.236 
+1 
+optimize topology:  -2127.036 --> -2127.036 
+0 
+optimize edge weights:  -2127.036 --> -2127.036 
+optimize edge weights:  -2272.931 --> -2264.561 optimize edge weights:  -2244.236 --> -2243.995 
+
+optimize edge weights:  -2164.814 --> -2162.053 
+optimize edge weights:  -2162.053 --> -2162.053 
+optimize edge weights:  -2264.561 --> -2263.256 
+optimize topology:  -2243.995 --> -2243.995 
+0 
+optimize topology:  -2162.053 --> -2162.053 
+optimize edge weights:  -2243.995 --> -2243.995 
+Final p-score 119 after  0 nni operations 
+optimize topology:  -2263.256 --> -2263.204 
+optimize topology:  -2162.053 --> -2162.053 
+1 
+optimize edge weights:  -2162.053 --> -2162.053 
+Final p-score 119 after  0 nni operations 
+optimize topology:  -2263.204 --> -2263.204 
+optimize edge weights:  -2194.132 --> -2191.842 
+optimize edge weights:  -2191.842 --> -2191.842 
+optimize topology:  -2162.053 --> -2162.053 
+0 
+optimize edge weights:  -2162.053 --> -2162.053 
+optimize edge weights:  -2179.462 --> -2176.226 
+optimize topology:  -2263.204 --> -2263.204 
+2 
+optimize edge weights:  -2176.226 --> -2176.226 
+optimize topology:  -2191.842 --> -2191.842 
+optimize edge weights:  -2263.204 --> -2263.204 
+optimize topology:  -2176.226 --> -2176.226 
+optimize topology:  -2191.842 --> -2191.842 
+1 
+optimize topology:  -2263.204 --> -2263.204 
+0 
+Final p-score 116 after  0 nni operations 
+optimize edge weights:  -2191.842 --> -2191.842 
+optimize edge weights:  -2263.204 --> -2263.204 
+optimize topology:  -2176.226 --> -2176.226 
+2 
+optimize edge weights:  -2176.226 --> -2176.226 
+optimize topology:  -2191.842 --> -2191.842 
+0 
+optimize edge weights:  -2191.842 --> -2191.842 
+Final p-score 108 after  0 nni operations 
+optimize edge weights:  -2152.801 --> -2144.636 
+optimize edge weights:  -2144.636 --> -2143.091 
+optimize topology:  -2176.226 --> -2176.226 
+0 
+optimize edge weights:  -2176.226 --> -2176.226 
+Final p-score 126 after  1 nni operations 
+optimize topology:  -2143.091 --> -2143.091 
+optimize edge weights:  -2139.611 --> -2136.756 
+optimize edge weights:  -2136.756 --> -2136.756 
+Final p-score 121 after  1 nni operations 
+optimize topology:  -2143.091 --> -2143.091 
+1 
+optimize topology:  -2136.756 --> -2136.756 
+optimize edge weights:  -2143.091 --> -2143.09 
+optimize edge weights:  -2224.947 --> -2221.787 
+optimize edge weights:  -2221.787 --> -2221.787 
+optimize edge weights:  -2240.087 --> -2237.506 
+optimize edge weights:  -2237.506 --> -2237.506 
+optimize topology:  -2136.756 --> -2136.756 
+1 
+optimize edge weights:  -2136.756 --> -2136.756 
+optimize topology:  -2143.09 --> -2143.09 
+0 
+optimize topology:  -2221.787 --> -2221.787 
+0 
+optimize edge weights:  -2221.787 --> -2221.787 
+optimize edge weights:  -2143.09 --> -2143.089 
+optimize edge weights:  -2221.787 --> -2221.787 
+optimize edge weights:  -2143.089 --> -2143.089 
+optimize topology:  -2237.506 --> -2233.382 
+optimize topology:  -2136.756 --> -2136.756 
+0 
+optimize edge weights:  -2143.089 --> -2143.088 
+optimize edge weights:  -2136.756 --> -2136.756 
+optimize edge weights:  -2143.088 --> -2143.088 
+Final p-score 112 after  0 nni operations 
+optimize topology:  -2233.382 --> -2233.08 
+Final p-score 133 after  1 nni operations 
+Final p-score 116 after  0 nni operations 
+optimize edge weights:  -2190.731 --> -2189.13 
+optimize edge weights:  -2189.13 --> -2189.13 
+optimize topology:  -2233.08 --> -2233.08 
+2 
+optimize edge weights:  -2233.08 --> -2233.08 
+optimize edge weights:  -2262.323 --> -2259.474 
+optimize edge weights:  -2259.474 --> -2259.474 
+optimize edge weights:  -2175.909 --> -2169.48 
+optimize topology:  -2189.13 --> -2189.13 
+optimize topology:  -2233.08 --> -2233.08 
+0 
+optimize edge weights:  -2233.08 --> -2233.08 
+optimize edge weights:  -2169.48 --> -2169.48 
+optimize topology:  -2259.474 --> -2259.474 
+0 
+optimize edge weights:  -2259.474 --> -2259.474 
+optimize edge weights:  -2259.474 --> -2259.474 
+Final p-score 119 after  1 nni operations 
+optimize topology:  -2189.13 --> -2189.13 
+optimize topology:  -2169.48 --> -2169.473 
+Final p-score 121 after  0 nni operations 
+optimize topology:  -2189.13 --> -2189.13 
+2 
+optimize edge weights:  -2189.13 --> -2189.13 
+optimize topology:  -2169.473 --> -2169.473 
+optimize edge weights:  -2214.185 --> -2205.719 
+optimize edge weights:  -2205.719 --> -2205.436 
+optimize topology:  -2169.473 --> -2169.473 
+2 
+optimize edge weights:  -2169.473 --> -2169.473 
+optimize topology:  -2189.13 --> -2189.13 
+0 
+optimize edge weights:  -2189.13 --> -2189.13 
+optimize topology:  -2205.436 --> -2204.197 
+optimize edge weights:  -2208.498 --> -2204.511 
+optimize topology:  -2169.473 --> -2169.473 
+0 
+optimize edge weights:  -2204.511 --> -2204.001 
+optimize edge weights:  -2169.473 --> -2169.473 
+Final p-score 131 after  0 nni operations 
+optimize topology:  -2204.001 --> -2202.469 
+optimize topology:  -2204.197 --> -2203.745 
+Final p-score 112 after  0 nni operations 
+optimize edge weights:  -2275.055 --> -2271.247 
+optimize topology:  -2202.469 --> -2202.431 
+optimize edge weights:  -2271.247 --> -2271.247 
+optimize topology:  -2203.745 --> -2202.232 
+4 
+optimize edge weights:  -2202.232 --> -2202.232 
+optimize edge weights:  -2139.864 --> -2137.561 
+optimize edge weights:  -2137.561 --> -2137.561 
+optimize topology:  -2202.431 --> -2202.431 
+3 
+optimize edge weights:  -2202.431 --> -2202.431 
+optimize topology:  -2271.247 --> -2271.246 
+optimize topology:  -2202.431 --> -2202.431 
+0 
+optimize topology:  -2202.232 --> -2202.232 
+optimize edge weights:  -2202.431 --> -2202.431 
+optimize topology:  -2137.561 --> -2137.56 
+Final p-score 136 after  0 nni operations 
+optimize topology:  -2202.232 --> -2202.232 
+1 
+optimize edge weights:  -2202.232 --> -2202.232 
+optimize topology:  -2137.56 --> -2137.501 
+optimize topology:  -2271.246 --> -2271.234 
+optimize topology:  -2202.232 --> -2202.232 
+0 
+optimize edge weights:  -2287.395 --> -2283.072 
+optimize edge weights:  -2202.232 --> -2202.232 
+optimize edge weights:  -2283.072 --> -2283.072 
+optimize topology:  -2137.501 --> -2137.493 
+4 
+optimize edge weights:  -2137.493 --> -2137.47 
+optimize topology:  -2271.234 --> -2271.234 
+3 
+optimize edge weights:  -2271.234 --> -2271.234 
+optimize topology:  -2283.072 --> -2283.072 
+Final p-score 121 after  2 nni operations 
+optimize topology:  -2137.47 --> -2136.912 
+optimize topology:  -2283.072 --> -2283.072 
+1 
+optimize topology: optimize edge weights:  -2283.072 --> -2283.072 
+ -2271.234 --> -2271.234 
+optimize topology:  -2136.912 --> -2136.911 
+optimize edge weights:  -2226.364 --> -2223.993 
+optimize edge weights:  -2223.993 --> -2223.993 
+optimize topology:  optimize topology:  -2283.072 --> -2283.072 
+0 
+-2271.234 --> -2271.234 
+1 
+optimize edge weights:  -2283.072 --> -2283.072 
+optimize edge weights:  -2271.234 --> -2271.234 
+optimize topology:  -2136.911 --> -2136.91 
+2 
+optimize edge weights:  -2136.91 --> -2136.909 
+Final p-score 99 after  0 nni operations 
+optimize topology:  -2223.993 --> -2223.993 
+optimize topology:  -2271.234 --> -2271.234 
+0 
+optimize topology:  -2136.909 --> -2136.908 
+0 
+optimize edge weights:  -2271.234 --> -2271.234 
+optimize edge weights:  -2136.908 --> -2136.907 
+optimize edge weights:  -2136.907 --> -2136.905 
+optimize topology:  -2223.993 --> -2223.993 
+1 
+optimize edge weights:  -2223.993 --> -2223.993 
+optimize edge weights:  -2136.905 --> -2136.904 
+optimize edge weights:  -2090.494 --> -2084.78 
+optimize edge weights:  -2084.78 --> -2084.78 
+optimize edge weights:  -2136.904 --> -2136.902 
+Final p-score 102 after  0 nni operations 
+optimize topology:  -2084.78 --> -2084.78 
+optimize topology:  -2223.993 --> -2223.993 
+0 
+optimize edge weights:  -2223.993 --> -2223.993 
+Final p-score 130 after  0 nni operations 
+optimize topology:  -2084.78 --> -2084.78 
+1 
+optimize edge weights:  -2120.121 --> -2118.972 
+optimize edge weights:  -2084.78 --> -2084.78 
+optimize edge weights:  -2118.972 --> -2118.972 
+Final p-score 122 after  0 nni operations 
+optimize topology:  -2118.972 --> -2118.972 
+0 
+optimize topology:  -2084.78 --> -2084.78 
+0 
+optimize edge weights:  -2118.972 --> -2118.972 
+optimize edge weights:  -2084.78 --> -2084.78 
+optimize edge weights:  -2118.972 --> -2118.972 
+optimize edge weights:  -2250.817 --> -2249.326 
+optimize edge weights:  -2249.326 --> -2249.326 
+optimize edge weights:  -2180.239 --> -2176.51 
+optimize edge weights:  -2176.51 --> -2176.51 
+Final p-score 126 after  0 nni operations 
+optimize topology:  -2249.326 --> -2249.256 
+Final p-score 127 after  0 nni operations 
+optimize topology:  -2176.51 --> -2176.51 
+optimize topology:  -2249.256 --> -2249.198 
+optimize edge weights:  -2220.715 --> -2215.605 
+optimize edge weights:  -2215.605 --> -2215.21 
+optimize edge weights:  -2242.62 --> -2235.76 
+optimize topology:  -2176.51 --> -2176.44 
+optimize edge weights:  -2235.76 --> -2235.385 
+optimize topology:  -2249.198 --> -2249.198 
+4 
+optimize edge weights:  -2249.198 --> -2249.198 
+optimize topology:  -2215.21 --> -2214.091 
+optimize topology:  -2176.44 --> -2172.932 
+3 
+optimize topology:  -2249.198 --> -2249.198 
+0 
+optimize edge weights:  -2172.932 --> -2172.932 
+optimize edge weights:  -2249.198 --> -2249.198 
+optimize topology:  -2235.385 --> -2235.325 
+0 
+optimize edge weights:  -2235.325 --> -2235.311 
+optimize edge weights:  -2235.311 --> -2235.311 
+optimize topology:  -2214.091 --> -2214.091 
+optimize edge weights:  -2235.311 --> -2235.311 
+optimize topology:  -2172.932 --> -2172.932 
+0 
+optimize edge weights:  -2172.932 --> -2172.932 
+Final p-score 122 after  0 nni operations 
+optimize topology:  -2214.091 --> -2214.081 
+3 
+optimize edge weights:  -2214.081 --> -2214.081 
+Final p-score 116 after  0 nni operations 
+Final p-score 118 after  1 nni operations 
+optimize edge weights:  -2176.53 --> -2171.178 
+optimize edge weights:  -2171.178 --> -2171.178 
+optimize topology:  -2214.081 --> -2214.081 
+optimize edge weights:  -2165.831 --> -2163.484 
+optimize edge weights:  -2163.484 --> -2163.484 
+optimize edge weights:  -2185.978 --> -2183.598 
+optimize edge weights:  -2183.598 --> -2183.598 
+optimize topology:  -2214.081 --> -2214.081 
+1 
+optimize topology:  optimize topology:  -2171.178-2163.484 -->  --> -2163.483 
+-2167.038 
+optimize edge weights:  -2214.081 --> -2214.081 
+optimize topology:  -2183.598 --> -2183.598 
+optimize topology:  -2163.483 --> -2163.483 
+optimize topology:  -2167.038 --> -2167.038 
+2 
+optimize edge weights:  -2167.038 --> -2167.038 
+optimize topology:  -2214.081 --> -2214.081 
+0 
+optimize edge weights:  -2214.081 --> -2214.081 
+optimize topology:  -2163.483 --> -2163.482 
+2 
+optimize topology:  -2183.598 --> -2183.598 
+1 
+optimize edge weights:  -2183.598 --> -2183.598 optimize edge weights:  
+-2163.482 --> -2163.481 
+optimize topology:  -2167.038 --> -2167.038 
+0 
+optimize edge weights:  -2167.038 --> -2167.038 
+optimize topology:  -2163.481 --> -2163.481 
+0 
+optimize topology:  -2183.598 --> -2183.598 
+0 
+optimize edge weights:  -2183.598 --> -2183.598 
+optimize edge weights:  -2163.481 --> -2163.48 
+optimize edge weights:  -2163.48 --> -2163.479 
+optimize edge weights:  -2163.479 --> -2163.478 
+optimize edge weights:  -2163.478 --> -2163.477 
+Final p-score 100 after  0 nni operations 
+Final p-score 112 after  0 nni operations 
+Final p-score 108 after  0 nni operations 
+optimize edge weights:  -2149.227 --> -2144.534 
+optimize edge weights:  -2144.534 --> -2143.998 
+optimize edge weights:  -2108.854 --> -2106.828 
+optimize edge weights:  -2106.828 --> -2106.828 
+optimize topology:  -2143.998 --> -2138.049 
+optimize edge weights:  -2114.483 --> -2112.522 
+optimize edge weights:  -2112.522 --> -2112.522 
+optimize topology:  -2112.522 --> -2112.522 
+0 
+optimize edge weights:  -2112.522 --> -2112.522 
+optimize edge weights:  -2112.522 --> -2112.522 
+optimize topology:  -2106.828 --> -2106.828 
+optimize topology:  -2138.049 --> -2137.669 
+Final p-score 126 after  0 nni operations 
+optimize topology:  -2137.669 --> -2137.475 
+3 
+optimize topology:  -2106.828 --> -2102.75 
+optimize edge weights:  -2137.475 --> -2137.475 
+optimize edge weights:  -2219.432 --> -2216.272 
+optimize edge weights:  -2216.272 --> -2216.272 
+optimize topology:  -2216.272 --> -2216.271 
+optimize topology:  -2102.75 --> -2102.75 
+3 
+optimize topology:  -2137.475 --> -2134.918 
+optimize edge weights:  -2102.75 --> -2102.75 
+optimize topology:  -2216.271 --> -2216.271 
+1 
+optimize edge weights:  -2216.271 --> -2216.271 
+optimize topology:  -2134.918 --> -2133.421 
+optimize topology:  -2102.75 --> -2102.75 
+0 
+optimize topology:  -2216.271 --> -2216.271 
+0 
+optimize edge weights:  -2102.75 --> -2102.75 
+optimize edge weights:  -2216.271 --> -2216.271 
+Final p-score 104 after  0 nni operations 
+optimize topology:  -2133.421 --> -2133.421 
+4 
+optimize edge weights:  -2133.421 --> -2133.421 
+Final p-score 128 after  0 nni operations 
+optimize edge weights:  -2117.563 --> -2107.508 
+optimize edge weights:  -2107.508 --> -2107.391 
+optimize topology:  -2133.421 --> -2133.421 
+0 
+optimize edge weights:  -2133.421 --> -2133.421 
+optimize edge weights:  -2248.624 --> -2244.702 
+optimize topology:  -2107.391 --> -2107.391 
+optimize edge weights:  -2244.702 --> -2244.702 
+optimize topology:  -2107.391 --> -2107.391 
+1 
+optimize edge weights:  -2107.391 --> -2107.391 
+Final p-score 105 after  0 nni operations 
+optimize topology:  -2244.702 --> -2244.702 
+optimize topology:  -2107.391 --> -2107.391 
+0 
+optimize edge weights:  -2107.391 --> -2107.391 
+optimize edge weights:  -2133.965 --> -2128.12 
+Final p-score 116 after  0 nni operations 
+optimize edge weights: optimize topology:  -2244.702 -->  -2128.12 --> -2127.679-2244.702 
+ 
+1 
+optimize edge weights:  -2244.702 --> -2244.702 
+optimize topology:  -2127.679 --> -2127.596 
+optimize edge weights:  -2155.081 --> -2152.325 
+optimize edge weights:  -2152.325 --> -2152.325 
+optimize topology:  -2244.702 --> -2244.702 
+0 
+optimize edge weights:  -2244.702 --> -2244.702 
+optimize topology:  -2152.325 --> -2152.325 
+optimize topology:  -2127.596 --> -2127.565 
+optimize topology:  -2152.325 --> -2152.325 
+optimize topology:  -2152.325 --> -2152.325 
+2 
+optimize edge weights:  -2152.325 --> -2152.325 
+optimize topology:  -2127.565 --> -2127.549 
+3 
+optimize topology:  -2152.325 --> -2152.325 
+0 
+optimize edge weights:  -2152.325 --> -2152.325 
+optimize edge weights:  -2127.549 --> -2127.521 
+optimize topology:  -2127.521 --> -2127.476 
+Final p-score 126 after  0 nni operations 
+optimize topology:  -2127.476 --> -2127.476 
+1 
+optimize edge weights:  -2127.476 --> -2127.476 
+optimize topology:  -2127.476 --> -2127.476 
+0 
+optimize edge weights:  -2244.661 --> -2238.223 
+optimize edge weights:  -2127.476 --> -2127.476 
+optimize edge weights:  -2238.223 --> -2236.085 
+optimize topology:  -2236.085 --> -2234.08 
+optimize topology:  -2234.08 --> -2234.08 
+1 
+optimize edge weights:  -2234.08 --> -2234.08 
+optimize topology:  -2234.08 --> -2234.08 
+0 
+optimize edge weights:  -2234.08 --> -2234.08 
+Final p-score 132 after  0 nni operations 
+optimize edge weights:  -2249.664 --> -2246.986 
+optimize edge weights:  -2246.986 --> -2246.986 
+optimize topology:  -2246.986 --> -2245.824 
+optimize topology:  -2245.824 --> -2245.824 
+optimize topology:  -2245.824 --> -2245.824 
+2 
+optimize edge weights:  -2245.824 --> -2245.824 
+optimize topology:  -2245.824 --> -2245.824 
+0 
+optimize edge weights:  -2245.824 --> -2245.824 
+Final p-score 101 after  0 nni operations 
+optimize edge weights:  -2086.373 --> -2083.62 
+optimize edge weights:  -2083.62 --> -2083.447 
+optimize topology:  -2083.447 --> -2083.447 
+0 
+optimize edge weights:  -2083.447 --> -2083.447 
+optimize edge weights:  -2083.447 --> -2083.447 
+Final p-score 92 after  0 nni operations 
+optimize edge weights:  -2076.858 --> -2075.279 
+optimize edge weights:  -2075.279 --> -2075.279 
+optimize topology:  -2075.279 --> -2075.279 
+optimize topology:  -2075.279 --> -2075.279 
+1 
+optimize edge weights:  -2075.279 --> -2075.279 
+optimize topology:  -2075.279 --> -2075.279 
+0 
+optimize edge weights:  -2075.279 --> -2075.279 
+Final p-score 113 after  0 nni operations 
+optimize edge weights:  -2146.648 --> -2143.77 
+optimize edge weights:  -2143.77 --> -2143.77 
+optimize topology:  -2143.77 --> -2143.592 
+optimize topology:  -2143.592 --> -2143.592 
+optimize topology:  -2143.592 --> -2143.592 
+2 
+optimize edge weights:  -2143.592 --> -2143.592 
+optimize topology:  -2143.592 --> -2143.592 
+0 
+optimize edge weights:  -2143.592 --> -2143.592 
+Final p-score 115 after  1 nni operations 
+optimize edge weights:  -2184.128 --> -2181.131 
+optimize edge weights:  -2181.131 --> -2181.131 
+optimize topology:  -2181.131 --> -2181.103 
+optimize topology:  -2181.103 --> -2181.092 
+optimize topology:  -2181.092 --> -2181.091 
+2 
+optimize edge weights:  -2181.091 --> -2181.091 
+optimize topology:  -2181.091 --> -2181.091 
+0 
+optimize edge weights:  -2181.091 --> -2181.091 
+
+> conc.fit.optr <- root(conc.fit.opt$tree, OUT, resolve.root=TRUE)
+
+> ## plot tree into PDF
+> pdf(paste0("99_trees/", DATE, "_semistrict_ml_kubricks.pdf"), height=8, width=12) # change PDF size if needed
+
+> oldpar <- par(mar=rep(0, 4))
+
+> tr <- plotBS(conc.fit.optr, conc.fit.bs, p=50, type="p")
+
+> mtext("semistrict ML", font=2, line=-1)
+
+> add.scale.bar()
+
+> dev.off()
+null device 
+          1 
+
+> ## and also save it as Newick
+> tr$node.label[tr$node.label == "NA"] <- "" # useful for some Newick reading software
+
+> write.tree(tr, file=paste0("99_trees/", DATE, "_semistrict_ml_kubricks.tre"))
