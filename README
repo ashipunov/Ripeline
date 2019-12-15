@@ -9,8 +9,10 @@ R with working Rscript command (check it by typing in the terminal window
 "Rscript", there should come some short instructions of how to use it)
 
 shipunov R package; after installation load it and type in R window
-"Rresults()"; this will output the instruction of how to install "Rresults"
-command
+"Rresults()"; this will output the instruction of how to install
+"Rresults" command. In principle, Ripeline works with basic "Rscript"
+(without "Rresults") but in that case you will need to modify "make_*"
+shell scripts
 
 The following R packages: ips, ape, kmer
 

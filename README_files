@@ -28,11 +28,11 @@
 81_make_mrbayes_semistrict_tree.r	R script to estimate Bayesian trees with external MrBayes tool
 99_trees/	resulted trees in PDF and also in Newick format
 _kubricks_dna.txt	local DNA database
-_kubricks_dna_c.txt	explanation if variables in "dna" table
+_kubricks_dna_c.txt	explanation of variables in the "dna" table
 _kubricks_sp.txt	taxonomical data
-_kubricks_sp_c.txt	explanation of variables in "sp" table
+_kubricks_sp_c.txt	explanation of variables in the "sp" table
 _kubricks_treesp.txt	analysis-specific species labels
-_kubricks_treesp_c.txt	explanation of variables in "treesp" table
+_kubricks_treesp_c.txt	explanation of variables in the "treesp" table
 make_all	shell script to run the whole pipeline
 make_check	shell script to check if runs went without errors
 make_data	shell script to make alignments and concatenated matrix
