@@ -6,6 +6,7 @@ library(phangorn)
 DATE <- format(Sys.time(), "%Y%m%d_%H%M%S") # timestamp
 
 conc <- as.phyDat(read.dna("40_concatenated/semistrict.fasta", format="fasta"))
+LAB <- sub("__.*$", "", labels(conc))
 
 treesp <- read.table("_kubricks_treesp.txt", sep="\t", h=TRUE, as.is=TRUE) # read treesp to understand outlliers
 outliers <- treesp$SPECIES.NEW[treesp$TYPE == "outlier" & treesp$USE == 1]
