@@ -2,6 +2,9 @@
 
 library(shipunov)
 
+## function to calculate number of taxonomically informative characters
+Is.tax.inform.char <- function(vec) sum(table(vec, useNA="no") > 1) > 1
+
 ## we will need DNA database again to access all species and IDs
 sequences <- read.table("_kubricks_dna.txt", sep="\t", h=TRUE, as.is=TRUE)
 ## we will need "treesp" to determine outgroups

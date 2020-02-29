@@ -1,45 +1,4 @@
 
-> ## this script takes the semistrict data and applies RAxML utility to make maximal likelihood tree
-> ## requires RAxML installation an dthe presence of working "raxmlHPC" binary
-> 
-> library(shipunov)
-package 'shipunov', version 1.5-1
-
-> library(ips) # this package contains raxml() function to call RAxML from within R
-Loading required package: ape
-
-> DATE <- format(Sys.time(), "%Y%m%d_%H%M%S") # timestamp
-
-> treesp <- read.table("_kubricks_treesp.txt", sep="\t", h=TRUE, as.is=TRUE) # is needed to understand outgroups and outliers
-
-> outgroups <- treesp$SPECIES.NEW[treesp$TYPE == "outgroup" & treesp$USE == 1]
-
-> outgroups <- gsub(" ", "_", outgroups)
-
-> conc <- read.dna("40_concatenated/semistrict.fasta", format="fasta")
-
-> LAB <- sub("__.*$", "", labels(conc))
-
-> OUT <- labels(conc)[LAB %in% outgroups]
-
-> outliers <- treesp$SPECIES.NEW[treesp$TYPE == "outlier" & treesp$USE == 1]
-
-> if (length(outliers) > 0) {
-+  outliers <- gsub(" ", "_", outliers)
-+  EXC <- labels(conc)[LAB %in% outliers]
-+  conc <- conc[!labels(conc) %in% EXC, ] # remove outliers, if any
-+ }
-
-> setwd("70_raxml_working") # go to RAxML working directory
-
-> tr <- raxml(conc, m="GTRGAMMAI", # change the model if needed
-+  f="a", # change RAxML algorithm if needed
-+  N=100, # change bootstrap options if needed
-+  p=1234, x=1234, exec="raxmlHPC", # change name of RAxML binary; on Windows, you will _need_ to change it
-+  outgroup=OUT)
-[1] "raxmlHPC -f a -p 1234 -x 1234 -m GTRGAMMAI -o Kubrickus_heus__K-008    -N 100   -s fromR_2020-02-29.phy -n fromR_2020-02-29"
-Use raxml with AVX support (2 cpus)
-
 You are using a proportion of Invariable sites estimate, although I don't
 like it. The likelihood epsilon "-f e" will be automatically lowered to 0.001
 to avoid unfavorable effects caused by simultaneous optimization of alpha and P-Invar
@@ -47,10 +6,6 @@ to avoid unfavorable effects caused by simultaneous optimization of alpha and P-
 
 Using BFGS method to optimize GTR rate parameters, to disable this specify "--no-bfgs" 
 
-
-This is the RAxML Master Pthread
-
-This is RAxML Worker Pthread Number: 1
 
 
 This is RAxML version 8.2.4 released by Alexandros Stamatakis on October 02 2015.
@@ -271,27 +226,3 @@ Best-scoring ML tree with support values as branch labels written to: /home/alex
 
 Overall execution time for full ML analysis: 5.476693 secs or 0.001521 hours or 0.000063 days
 
-
-> setwd("..") # go out of RAxML working directory
-
-> ## print "bipartitions" tree to PDF
-> pdf(paste0("99_trees/", DATE, "_semistrict_raxml_kubricks.pdf"), height=8, width=12) # change PDF size if needed
-
-> oldpar <- par(mar=rep(0, 4))
-
-> plot(tr$bipartitions)
-
-> nodelabels(tr$bipartitions$node.label, frame="none", bg="transparent", adj=-0.1)
-
-> mtext("semistrict RAxML", font=2, line=-1)
-
-> add.scale.bar()
-
-> dev.off()
-null device 
-          1 
-
-> ## also save it as Newick
-> tr$node.label[tr$node.label == "NA"] <- "" # useful for some Newick reading software
-
-> write.tree(tr$bipartitions, file=paste0("99_trees/", DATE, "_semistrict_raxml_kubricks.tre"))

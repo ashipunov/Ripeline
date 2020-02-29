@@ -23,7 +23,9 @@ if (length(outliers) > 0) {
 
 conc.phydat <- phyDat(conc) # "phangorn" requires everything in its own format
 
-conc.pr <- pratchet(conc.phydat, maxit=100, k=20) # change these parsimony ratchet parameters if needed
+tr1 <- NJ(dist.hamming(conc.phydat)) # make starting tree
+conc.pr <- pratchet(conc.phydat, maxit=100, k=20, start=tr1) # change these parsimony ratchet parameters if needed
+if (!is.binary(conc.pr)) conc.pr <- multi2di(conc.pr) # sometimes, trees are not binary
 conc.pr <- acctran(conc.pr, conc.phydat)
 conc.ptrees <- bootstrap.phyDat(conc.phydat, pratchet, bs=100, multicore=TRUE) # change bootstrap replications if needed
 conc.prr <- Root1(conc.pr, OUT, resolve.root=TRUE) # Root1() does not fail if unable to root on > 1 outgroup

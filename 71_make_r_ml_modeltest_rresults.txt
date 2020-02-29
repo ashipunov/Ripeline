@@ -9,6 +9,8 @@ Loading required package: ape
 
 > conc <- as.phyDat(read.dna("40_concatenated/semistrict.fasta", format="fasta"))
 
+> LAB <- sub("__.*$", "", labels(conc))
+
 > treesp <- read.table("_kubricks_treesp.txt", sep="\t", h=TRUE, as.is=TRUE) # read treesp to understand outlliers
 
 > outliers <- treesp$SPECIES.NEW[treesp$TYPE == "outlier" & treesp$USE == 1]
@@ -25,10 +27,10 @@ Loading required package: ape
 negative edges length changed to 0!
 [1] "JC+I"
 [1] "JC+G"
-[1] "JC+G+I"
 [1] "HKY+I"
-[1] "HKY+G"
+[1] "JC+G+I"
 [1] "GTR+I"
+[1] "HKY+G"
 [1] "HKY+G+I"
 [1] "GTR+G"
 [1] "GTR+G+I"

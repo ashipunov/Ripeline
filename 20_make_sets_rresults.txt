@@ -4,7 +4,7 @@
 > ## only those external source sequences used which (a) belong to species / fragments absent in "our" and (b) longest
 > 
 > library(shipunov)
-package 'shipunov', version 1.3-1
+package 'shipunov', version 1.5-1
 
 > set <- read.table("_kubricks_dna.txt", sep="\t", h=TRUE, as.is=TRUE)
 
